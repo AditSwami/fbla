@@ -25,10 +25,15 @@ ThemeData darkMode = ThemeData(
         color: AppUi.grey,
         fontSize: 15,
       ),
+    labelMedium: GoogleFonts.jost(
+      fontWeight: FontWeight.bold,
+      color: AppUi.offWhite,
+      fontSize: 12
+    )
   ),
     brightness: Brightness.dark,
     colorScheme: ColorScheme.dark(
       surface: AppUi.backgroundDark,
       primary: AppUi.primary,
-      secondary: AppUi.grey
+      secondary: AppUi.grey,
     ));

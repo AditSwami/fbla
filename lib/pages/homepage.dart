@@ -1,3 +1,4 @@
+import 'package:fbla_2025/components/add_class.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fbla_2025/app_ui.dart';
@@ -32,18 +33,31 @@ class _HomepageState extends State<Homepage> {
       body: const Center(
         child: Column(
           children: [
-            SizedBox(
-              height: 5,
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ClassBox(className: 'hello'),
             ),
-            ClassBox(className: 'hello'),
-            SizedBox(
-              height: 16,
-            ),
-            ClassBox(className: 'hello'),
             SizedBox(
               height: 16,
             ),
-            ClassBox(className: 'hello'),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ClassBox(className: 'hello'),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ClassBox(className: 'hello'),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: AddClass()
+            )
           ],
         ),
       ),

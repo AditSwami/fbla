@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/components/animatedGradientBox.dart';
+import 'package:fbla_2025/components/gradientBox.dart';
 
-class ClassBox extends StatelessWidget {
+class ClassBox extends StatefulWidget {
   const ClassBox({Key? key, required this.className}) : super(key: key);
 
   final String className;
 
   @override
+  State<ClassBox> createState() => _ClassBoxState();
+}
+
+class _ClassBoxState extends State<ClassBox> {
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return Gradientbox(
       height: 121,
-      width: 328,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: AppUi.grey),
-        color: AppUi.backgroundDark,
-      ),
+      width: 228,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -24,15 +24,20 @@ class ClassBox extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.only(bottom: 10, top: 8),
                 child: Text(
-                  className,
+                  widget.className,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0, top: 8),
-                  child: Animatedgradientbox(height: 60, width: 150),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, top: 8),
+                  // ignore: sized_box_for_whitespace
+                  child: Container(
+                    height: 48,
+                    width: 198,
+                    child: const Text('data'),
+                  )
               ),
             ]
           ),
@@ -42,14 +47,10 @@ class ClassBox extends StatelessWidget {
               child: Container(
                 height: 25,
                 width: 50,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppUi.primary,
-                ),
                 child: Icon(
-                  Icons.arrow_right_alt,
-                  color: AppUi.backgroundDark,
-                  size: 35,
+                  Icons.chevron_right_rounded,
+                  color: AppUi.grey,
+                  size: 28,
                 ),
               ),
               onTap: () {

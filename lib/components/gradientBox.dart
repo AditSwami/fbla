@@ -44,7 +44,7 @@ class _GradientboxState extends State<Gradientbox> {
                 gradient: LinearGradient(
                     begin: Alignment.bottomLeft,
                     end: Alignment.topRight,
-                    colors: [AppUi.primary, AppUi.backgroundDark, AppUi.backgroundDark])),
+                    colors: [AppUi.primary.withOpacity(.6), AppUi.backgroundDark, AppUi.backgroundDark])),
           ),
         ),
       ]);

@@ -5,15 +5,15 @@ final FirebaseFirestore db = FirebaseFirestore.instance;
 
 class ClassData {
   ClassData(
-      {required this.className,
-      required this.classDescription,
-      required this.dateMade,
-      required this.creator});
+      {this.className,
+      this.classDescription,
+      this.dateMade,
+      this.creator});
 
-  String className;
-  String classDescription;
-  DateTime dateMade;
-  String creator;
+  String? className;
+  String? classDescription;
+  DateTime? dateMade;
+  String? creator;
 
   factory ClassData.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

@@ -27,9 +27,17 @@ class MyApp extends StatelessWidget {
       theme: darkMode,
       themeMode: ThemeMode.system,
       home: const Homepage(),
+      onGenerateRoute: (settings) {
+        if (settings.name == '/class') {
+          final className = settings.arguments as String;
+          return MaterialPageRoute(
+            builder: (context) => ClassPage(className: className),
+          );
+        }
+        return null;
+      },
       routes: {
         '/home': (context) => const Homepage(),
-        '/class': (context) => ClassPage(className: ''),
         '/newClass': (context) => const AddclassPage()
       },
     );

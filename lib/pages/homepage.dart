@@ -35,21 +35,21 @@ class _HomepageState extends State<Homepage> {
           children: [
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: ClassBox(className: 'hello'),
+              child: ClassBox(className: 'hello', progress: 'bad',),
             ),
             SizedBox(
               height: 16,
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: ClassBox(className: 'hello'),
+              child: ClassBox(className: 'hello', progress: 'bad'),
             ),
             SizedBox(
               height: 16,
             ),
             Padding(
               padding: EdgeInsets.all(8.0),
-              child: ClassBox(className: 'hello'),
+              child: ClassBox(className: 'hello', progress: 'bad'),
             ),
             SizedBox(
               height: 16,

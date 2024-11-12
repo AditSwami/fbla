@@ -9,12 +9,13 @@ class AddClass extends StatelessWidget {
     return GestureDetector(
       child: Container(
         height: 60,
-        width: 328,
+        width: 370,
         decoration: BoxDecoration(
-            color: AppUi.grey.withOpacity(.3),
+            color: AppUi.grey.withOpacity(.2),
             borderRadius: BorderRadius.circular(20)),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Add New Class',

@@ -1,5 +1,5 @@
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/components/unitBox.dart';
+import 'package:fbla_2025/components/gradientBox.dart';
 import 'package:flutter/material.dart';
 
 class ClassPage extends StatelessWidget {
@@ -23,7 +23,7 @@ class ClassPage extends StatelessWidget {
       body: const Center(
         child: Column(
           children: [
-            Unitbox()
+            Gradientbox(height: 10,width: 10,)
           ],
         ),
       ),

@@ -1,5 +1,7 @@
 import 'package:fbla_2025/firebase_options.dart';
 import 'package:fbla_2025/pages/addClass_page.dart';
+import 'package:fbla_2025/pages/auth/logIn.dart';
+import 'package:fbla_2025/pages/auth/signUp.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: darkMode,
       themeMode: ThemeMode.system,
-      home: const Homepage(),
+      home: Signup(),
       onGenerateRoute: (settings) {
         if (settings.name == '/class') {
           final className = settings.arguments as String;
@@ -38,7 +40,9 @@ class MyApp extends StatelessWidget {
       },
       routes: {
         '/home': (context) => const Homepage(),
-        '/newClass': (context) => const AddclassPage()
+        '/newClass': (context) => const AddclassPage(),
+        '/signUp': (context) => Signup(),
+        '/login': (context) => Login()
       },
     );
   }

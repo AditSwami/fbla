@@ -17,7 +17,7 @@ ThemeData darkMode = ThemeData(
       fontSize: 30,
     ),
     titleMedium: GoogleFonts.jost(
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         fontSize: 18,
       ),
     titleSmall: GoogleFonts.jost(
@@ -25,10 +25,21 @@ ThemeData darkMode = ThemeData(
         color: AppUi.grey,
         fontSize: 15,
       ),
-    labelMedium: GoogleFonts.jost(
-      fontWeight: FontWeight.bold,
+    labelLarge: GoogleFonts.jost(
       color: AppUi.offWhite,
-      fontSize: 12
+      fontSize: 18
+    ),
+    labelMedium: GoogleFonts.jost(
+      color: AppUi.offWhite,
+      fontSize: 15
+    ),
+    labelSmall: GoogleFonts.jost(
+            color: AppUi.offWhite,
+            fontSize: 13
+    ),
+    bodyMedium: GoogleFonts.jost(
+      color: AppUi.offWhite,
+      fontSize: 15
     )
   ),
     brightness: Brightness.dark,

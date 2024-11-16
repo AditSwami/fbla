@@ -14,7 +14,7 @@ class AddclassPage extends StatefulWidget {
 class _AddclassPageState extends State<AddclassPage> {
   final TextEditingController _className = new TextEditingController();
   final TextEditingController _description = new TextEditingController();
-  final TextEditingController _creator = new TextEditingController();
+  //final TextEditingController _creator = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +73,12 @@ class _AddclassPageState extends State<AddclassPage> {
                   width: 150,
                   decoration: BoxDecoration(
                       border:
-                          Border.all(color: Color.fromARGB(255, 143, 74, 247)),
+                          Border.all(color: AppUi.primary),
                       borderRadius: BorderRadius.circular(10),
                       color: AppUi.backgroundDark,
                       boxShadow: [
                         BoxShadow(
-                          color: Color.fromARGB(255, 143, 74, 247)
+                          color: AppUi.primary.withOpacity(.5)
                               .withOpacity(0.6),
                           blurRadius: 6.0,
                           spreadRadius: 3.0,
@@ -86,11 +86,8 @@ class _AddclassPageState extends State<AddclassPage> {
                       ]),
                   child: Center(
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: Icon(Icons.stars),
-                        ),
                         Text(
                           'Generate',
                           style: Theme.of(context).textTheme.labelMedium,

@@ -1,4 +1,4 @@
-# fbla_2025
+# Journey
 
 An app that lets you add all of your classes in one app to make it easier to study, as well as integrate many games in order to make learning easier.
 

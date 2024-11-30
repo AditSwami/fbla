@@ -1,6 +1,6 @@
 # fbla_2025
 
-A new Flutter project.
+An app that lets you add all of your classes in one app to make it easier to study, as well as integrate many games in order to make learning easier.
 
 ## Getting Started
 

@@ -13,6 +13,7 @@ import 'package:fbla_2025/Services/Gemini.dart';
 void main() async {
   runApp(const MyApp());
 
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

@@ -123,6 +123,9 @@ class Signup extends StatelessWidget {
                           ?.copyWith(color: AppUi.backgroundDark)),
                 ],
               ),
+              onTap: () {
+                
+              },
             ),
             const SizedBox(
               height: 20,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fbla_2025/Services/database.dart';
+import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Gemini.dart';
 import 'package:fbla_2025/app_ui.dart';
 
@@ -72,14 +72,12 @@ class _AddclassPageState extends State<AddclassPage> {
                   height: 30,
                   width: 150,
                   decoration: BoxDecoration(
-                      border:
-                          Border.all(color: AppUi.primary),
+                      border: Border.all(color: AppUi.primary),
                       borderRadius: BorderRadius.circular(10),
                       color: AppUi.backgroundDark,
                       boxShadow: [
                         BoxShadow(
-                          color: AppUi.primary.withOpacity(.5)
-                              .withOpacity(0.6),
+                          color: AppUi.primary.withOpacity(.5).withOpacity(0.6),
                           blurRadius: 6.0,
                           spreadRadius: 3.0,
                         )
@@ -113,11 +111,7 @@ class _AddclassPageState extends State<AddclassPage> {
             color: AppUi.grey,
           ),
           onTap: () {
-            ClassData(
-                classDescription: _description.text,
-                className: _className.text,
-                dateMade: DateTime.now(),
-                creator: 'me').toFirestore();
+            ClassData clas = ClassData();
           },
         )
       ]),

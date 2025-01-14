@@ -15,17 +15,15 @@ class Button extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: onTap,
       child: Container(
         height: height ?? 45,
         width: width ?? 360,
         decoration: BoxDecoration(
-            color: color ?? AppUi.grey.withOpacity(.2),
-            borderRadius: BorderRadius.circular(9)),
+            color: color ?? AppUi.grey.withValues(alpha: .2),
+            borderRadius: BorderRadius.circular(15)),
         child: child,
-      ),
-      onTap: () {
-        onTap;
-      },
+      )
     );
   }
 }

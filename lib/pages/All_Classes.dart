@@ -1,20 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/components/class_box.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
+import '../components/class_box.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
-
+class AllClasses extends StatefulWidget {
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<AllClasses> createState() => _AllClassesState();
 }
 
-class _HomepageState extends State<Homepage> {
-  String searchText = ' ';
-
-
+class _AllClassesState extends State<AllClasses> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +26,7 @@ class _HomepageState extends State<Homepage> {
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: Text(
-                'My Classes',
+                'Classes',
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
@@ -60,47 +55,30 @@ class _HomepageState extends State<Homepage> {
             SizedBox(
               height: 20,
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(8.0),
-              child: ClassBox(className: 'hello', progress: 'bad',),
+              child: ClassBox(
+                className: 'hello',
+                progress: 'bad',
+              ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            Padding(
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ClassBox(className: 'hello', progress: 'bad'),
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            const Padding(
               padding: EdgeInsets.all(8.0),
               child: ClassBox(className: 'hello', progress: 'bad'),
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ClassBox(className: 'hello', progress: 'bad'),
-          ),
-            SizedBox(
-              height: 16,
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Button(
-            //     height: 60,
-            //     width: 370,
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       crossAxisAlignment: CrossAxisAlignment.center,
-            //       children: [
-            //         Text(
-            //           'Add New Class',
-            //           style: Theme.of(context).textTheme.labelLarge,
-            //         )
-            //       ],
-            //     ),
-            //     onTap: () {
-                  
-            //     },
-            //   )
-            //),
           ],
         ),
       ),

@@ -1,8 +1,12 @@
+import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
+import 'package:fbla_2025/data/Provider.dart';
+import 'package:fbla_2025/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Gemini.dart';
 import 'package:fbla_2025/app_ui.dart';
+import 'package:provider/provider.dart';
 
 class AddclassPage extends StatefulWidget {
   const AddclassPage({super.key});
@@ -14,6 +18,8 @@ class AddclassPage extends StatefulWidget {
 class _AddclassPageState extends State<AddclassPage> {
   final TextEditingController _className = new TextEditingController();
   final TextEditingController _description = new TextEditingController();
+
+  String customId = DateTime.now().millisecondsSinceEpoch.toString();
   //final TextEditingController _creator = new TextEditingController();
 
   @override
@@ -112,6 +118,17 @@ class _AddclassPageState extends State<AddclassPage> {
           ),
           onTap: () {
             ClassData clas = ClassData();
+            UserData? user = context.read<UserProvider>().currentUser;
+            clas.creator = user.firstName;
+            clas.description = _description.text;
+            clas.dateMade = DateTime.now();
+            clas.name = _className.text;
+            clas.id = customId;
+            clas.units = [];
+
+            Firestore.addClass(clas);
+
+            Navigator.pop(context);
           },
         )
       ]),

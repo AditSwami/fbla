@@ -12,7 +12,7 @@ class ClassPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 90,
-        //utomaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
         backgroundColor: AppUi.backgroundDark,
         title: Text(
           className,

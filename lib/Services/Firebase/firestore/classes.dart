@@ -2,6 +2,7 @@ class UserData {
   UserData();
 
   UserData.empty();
+  String id = "";
   String firstName = "";
   String lastName = "";
   String pfp = "";

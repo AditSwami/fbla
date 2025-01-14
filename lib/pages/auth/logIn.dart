@@ -1,9 +1,16 @@
+import 'package:fbla_2025/Services/Firebase/firestore/Auth/Auth.dart';
+import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/components/authButton.dart';
 import 'package:fbla_2025/components/button.dart';
+import 'package:fbla_2025/data/Provider.dart';
+import 'package:fbla_2025/pages/homepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_ui.dart';
+import '../../Services/Auth.dart';
+import '../../data/Provider.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -72,12 +79,23 @@ class Login extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Log in',
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppUi.backgroundDark)
-                  ),
+                  Text('Log in',
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelLarge
+                          ?.copyWith(color: AppUi.backgroundDark)),
                 ],
               ),
+              onTap: () async {
+                UserData? u = await Authentication.signInWithEmail(
+                    _email.text, _password.text, context);
+
+                context.read<UserProvider>().setCurentUser(u!);
+                context.read<UserProvider>().setAuth(true);
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.pushReplacement(context,
+                    CupertinoPageRoute(builder: (context) => Homepage()));
+              },
             ),
             const SizedBox(
               height: 20,
@@ -96,10 +114,8 @@ class Login extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'OR',
-                    style: Theme.of(context).textTheme.titleSmall
-                  ),
+                  child:
+                      Text('OR', style: Theme.of(context).textTheme.titleSmall),
                 ),
                 Expanded(
                   child: Divider(
@@ -116,7 +132,9 @@ class Login extends StatelessWidget {
               height: 20,
             ),
             const Padding(
-              padding: EdgeInsets.only(bottom: 15,),
+              padding: EdgeInsets.only(
+                bottom: 15,
+              ),
               child: AuthButton(auth: 'google'),
             ),
             const Padding(

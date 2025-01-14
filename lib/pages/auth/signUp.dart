@@ -1,18 +1,24 @@
+import 'package:fbla_2025/Services/Firebase/firestore/Auth/Auth.dart';
 import 'package:fbla_2025/components/authButton.dart';
+import 'package:fbla_2025/pages/Register.dart';
+import 'package:fbla_2025/pages/auth/logIn.dart';
+import 'package:fbla_2025/pages/homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../Services/Firebase/firestore/classes.dart';
 import '../../app_ui.dart';
+import '../../Services/auth.dart';
 import '../../components/button.dart';
 
 class Signup extends StatelessWidget {
   Signup({super.key});
 
-  final TextEditingController _firstName = TextEditingController();
-  final TextEditingController _lastName = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,48 +34,6 @@ class Signup extends StatelessWidget {
               height: 20,
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 260, bottom: 5),
-              child: Text(
-                'First Name:',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            SizedBox(
-              width: 360,
-              child: CupertinoTextField(
-                controller: _firstName,
-                placeholder: 'First Name',
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppUi.grey.withOpacity(.2),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 265, bottom: 5),
-              child: Text(
-                'Last Name:',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            SizedBox(
-              width: 360,
-              child: CupertinoTextField(
-                controller: _lastName,
-                placeholder: 'Last Name',
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppUi.grey.withOpacity(.2),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Padding(
               padding: const EdgeInsets.only(right: 310, bottom: 5),
               child: Text(
                 'Email:',
@@ -80,11 +44,15 @@ class Signup extends StatelessWidget {
               width: 360,
               child: CupertinoTextField(
                 controller: _email,
+                style: Theme.of(context).textTheme.bodyLarge,
                 placeholder: 'Email',
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: AppUi.grey.withOpacity(.2),
+                  color: AppUi.grey.withValues(alpha: .2),
                 ),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
               ),
             ),
             const SizedBox(
@@ -101,18 +69,22 @@ class Signup extends StatelessWidget {
               width: 360,
               child: CupertinoTextField(
                 controller: _password,
+                style: Theme.of(context).textTheme.bodyLarge,
                 placeholder: 'Password',
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: AppUi.grey.withOpacity(.2),
+                  color: AppUi.grey.withValues(alpha: .2),
                 ),
+                onTapOutside: (event) {
+                  FocusScope.of(context).unfocus();
+                },
               ),
             ),
             const SizedBox(
               height: 30,
             ),
             Button(
-              color: AppUi.primary.withOpacity(.8),
+              color: AppUi.primary.withValues(alpha: .8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -123,8 +95,13 @@ class Signup extends StatelessWidget {
                           ?.copyWith(color: AppUi.backgroundDark)),
                 ],
               ),
-              onTap: () {
-                
+              onTap: () async {
+                UserData? u = await Authentication.signUpwithEmail(
+                    _email.text, _password.text, context);
+                if (u == null && FirebaseAuth.instance.currentUser != null) {
+                  Navigator.pushReplacement(context,
+                      CupertinoPageRoute(builder: (context) => Register(email: _email.text,)));
+                }
               },
             ),
             const SizedBox(
@@ -139,7 +116,7 @@ class Signup extends StatelessWidget {
                 Expanded(
                   child: Divider(
                     thickness: 1.5,
-                    color: AppUi.grey.withOpacity(.4),
+                    color: AppUi.grey.withValues(alpha: .4),
                   ),
                 ),
                 Padding(
@@ -150,7 +127,7 @@ class Signup extends StatelessWidget {
                 Expanded(
                   child: Divider(
                     thickness: 1.5,
-                    color: AppUi.grey.withOpacity(.4),
+                    color: AppUi.grey.withValues(alpha: .4),
                   ),
                 ),
                 const SizedBox(
@@ -181,7 +158,28 @@ class Signup extends StatelessWidget {
                 auth: 'facebook',
                 action: 'sign up',
               ),
-            )
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                  text: 'Already have an account? ',
+                  style: Theme.of(context).textTheme.bodyMedium),
+              TextSpan(
+                  text: 'Sign in',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(decoration: TextDecoration.underline),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.pushReplacement(context,
+                        CupertinoPageRoute(builder: (context) => Login())
+                      );
+                    })
+            ]))
           ],
         ),
       ),

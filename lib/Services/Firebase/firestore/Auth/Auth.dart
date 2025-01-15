@@ -1,5 +1,4 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
-import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/components/utils.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,6 +1,6 @@
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
+import 'package:fbla_2025/components/animatedGradientBox.dart';
 import 'package:fbla_2025/data/Provider.dart';
-import 'package:fbla_2025/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
@@ -45,8 +45,8 @@ class _AddclassPageState extends State<AddclassPage> {
             controller: _className,
             placeholder: 'Class Name',
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: AppUi.grey.withOpacity(0.3)),
+                borderRadius: BorderRadius.circular(8),
+                color: AppUi.grey.withOpacity(0.15)),
             style: TextStyle(color: AppUi.offWhite),
           ),
         ),
@@ -65,8 +65,8 @@ class _AddclassPageState extends State<AddclassPage> {
               maxLines: null,
               placeholder: 'Description',
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: AppUi.grey.withOpacity(0.3)),
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppUi.grey.withOpacity(0.15)),
               style: TextStyle(color: AppUi.offWhite, height: 1.5),
             ),
           ),
@@ -74,31 +74,15 @@ class _AddclassPageState extends State<AddclassPage> {
         Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
-                child: Container(
-                  height: 30,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: AppUi.primary),
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppUi.backgroundDark,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppUi.primary.withOpacity(.5).withOpacity(0.6),
-                          blurRadius: 6.0,
-                          spreadRadius: 3.0,
-                        )
-                      ]),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Generate',
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                      ],
-                    ),
-                  ),
+                child: Animatedgradientbox(
+                  height:10,
+                  width: 90,
+                  // child: Center(
+                  //   child: Text(
+                  //     'Generate',
+                  //     style: Theme.of(context).textTheme.labelMedium,
+                  //   ),
+                  // ),
                 ),
                 onTap: () async {
                   String className = _className.text;
@@ -110,6 +94,9 @@ class _AddclassPageState extends State<AddclassPage> {
                     });
                   }
                 })),
+                const SizedBox(
+                  height: 30,
+                ),
         GestureDetector(
           child: Container(
             height: 30,

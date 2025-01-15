@@ -50,7 +50,7 @@ class Firestore {
   }
 
   static Future<ClassData?> addClass(ClassData clas) async {
-    final docRef = db.collection('classes').doc(clas.id).set({
+    db.collection('classes').doc(clas.id).set({
       'name': clas.name,
       'description': clas.description,
       'dateMade': clas.dateMade,

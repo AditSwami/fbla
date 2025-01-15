@@ -10,10 +10,11 @@ class AppUi {
 }
 
 ThemeData darkMode = ThemeData(
+  splashFactory: NoSplash.splashFactory,
   textTheme: TextTheme(
     titleLarge: GoogleFonts.jost(
       fontWeight: FontWeight.w700,
-      color: AppUi.offWhite,
+      color: AppUi.primary,
       fontSize: 30,
     ),
     titleMedium: GoogleFonts.jost(
@@ -37,12 +38,16 @@ ThemeData darkMode = ThemeData(
             color: AppUi.offWhite,
             fontSize: 13
     ),
+    bodyLarge: GoogleFonts.jost(
+      color: AppUi.offWhite,
+      fontSize: 18
+    ),
     bodyMedium: GoogleFonts.jost(
       color: AppUi.offWhite,
-      fontSize: 15
+      fontSize: 16
     ),
     bodySmall: GoogleFonts.jost(
-      color: AppUi.offWhite,
+      color: AppUi.grey,
       fontSize: 13
     )
 

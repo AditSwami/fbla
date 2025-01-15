@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/components/gradientBox.dart';
 
 class ClassBox extends StatefulWidget {
   const ClassBox({Key? key, required this.className, required this.progress})

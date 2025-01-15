@@ -3,7 +3,6 @@ import 'package:fbla_2025/data/Provider.dart';
 import 'package:fbla_2025/firebase_options.dart';
 import 'package:fbla_2025/pages/Main_Page.dart';
 import 'package:fbla_2025/pages/addClass_page.dart';
-import 'package:fbla_2025/pages/auth/logIn.dart';
 import 'package:fbla_2025/pages/auth/signUp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,8 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/pages/homepage.dart';
-import 'package:fbla_2025/pages/class_page.dart';
+import 'package:fbla_2025/pages/homepage.dart'; 
 import 'package:fbla_2025/Services/Gemini.dart';
 
 void main() async {

@@ -19,8 +19,9 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        forceMaterialTransparency: true,
         automaticallyImplyLeading: false,
-        toolbarHeight: 110,
+        toolbarHeight: 112,
         backgroundColor: AppUi.backgroundDark,
         flexibleSpace: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,6 +45,7 @@ class _HomepageState extends State<Homepage> {
                 width: 365,
                 child: CupertinoSearchTextField(
                   backgroundColor: AppUi.grey.withValues(alpha: .1),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   onChanged: (value) => {},
                   onSubmitted: (value) {},
                   placeholder: 'Search',
@@ -53,55 +55,81 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
         centerTitle: false,
+        
       ),
-      body: const Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 230.0),
+                child: Text(
+                  'Created classes',
+                  style: Theme.of(context).textTheme.titleMedium
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ClassBox(className: 'hello', progress: 'bad',),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ClassBox(className: 'hello', progress: 'bad'),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ClassBox(className: 'hello', progress: 'bad'),
             ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ClassBox(className: 'hello', progress: 'bad',),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ClassBox(className: 'hello', progress: 'bad'),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ClassBox(className: 'hello', progress: 'bad'),
+              const SizedBox(
+                height: 16,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 240.0),
+                child: Text('Joined classes',
+                    style: Theme.of(context).textTheme.titleMedium),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ClassBox(
+                  className: 'hello',
+                  progress: 'bad',
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ClassBox(
+                  className: 'hello',
+                  progress: 'bad',
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ClassBox(
+                  className: 'hello',
+                  progress: 'bad',
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ClassBox(
+                  className: 'hello',
+                  progress: 'bad',
+                ),
+              ),
+            ],
           ),
-            SizedBox(
-              height: 16,
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Button(
-            //     height: 60,
-            //     width: 370,
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       crossAxisAlignment: CrossAxisAlignment.center,
-            //       children: [
-            //         Text(
-            //           'Add New Class',
-            //           style: Theme.of(context).textTheme.labelLarge,
-            //         )
-            //       ],
-            //     ),
-            //     onTap: () {
-                  
-            //     },
-            //   )
-            //),
-          ],
         ),
       ),
     );

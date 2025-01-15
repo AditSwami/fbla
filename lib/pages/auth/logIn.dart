@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_ui.dart';
-import '../../Services/Auth.dart';
-import '../../data/Provider.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -44,6 +42,7 @@ class Login extends StatelessWidget {
               child: CupertinoTextField(
                 controller: _email,
                 placeholder: 'Email',
+                style: Theme.of(context).textTheme.bodyLarge,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: AppUi.grey.withOpacity(.2),
@@ -65,6 +64,7 @@ class Login extends StatelessWidget {
               child: CupertinoTextField(
                 controller: _password,
                 placeholder: 'Password',
+                style: Theme.of(context).textTheme.bodyLarge,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   color: AppUi.grey.withOpacity(.2),

@@ -22,6 +22,10 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  UserData getCurrentUser() {
+    return _currentUser;
+  }
+
   Future<UserData?> getUser(String id,
       [DocumentSnapshot<Map<String, dynamic>>? snap]) async {
     if (id == _currentUser.id) {
@@ -32,7 +36,7 @@ class UserProvider with ChangeNotifier {
       return users[index];
     } else {
       UserData? user = await Firestore.getUser(id, snap);
-      if (user != null) { 
+      if (user != null) {
         users.add(user);
       }
       return user;

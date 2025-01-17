@@ -1,8 +1,10 @@
+import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/app_ui.dart';
 import 'package:fbla_2025/pages/addClass_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../Services/Firebase/firestore/classes.dart';
 import '../components/class_box.dart';
 
 class AllClasses extends StatefulWidget {
@@ -11,13 +13,29 @@ class AllClasses extends StatefulWidget {
 }
 
 class _AllClassesState extends State<AllClasses> {
+  List<ClassData> _classes = [];
+
+  void initState() {
+    super.initState();
+    Firestore.getClasses(context).then((classes) {
+      setState(() {
+        if (classes == null || classes.isEmpty) {
+          print("No classes retrieved!");
+        } else {
+          print("Classes retrieved: ${classes.length}");
+        }
+        _classes = classes ?? [];
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
         automaticallyImplyLeading: false,
-        toolbarHeight: 110,
+        toolbarHeight: 120,
         backgroundColor: AppUi.backgroundDark,
         flexibleSpace: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,68 +86,22 @@ class _AllClassesState extends State<AllClasses> {
         ],
         centerTitle: false,
       ),
-      body: const Center(
-        child: SingleChildScrollView(
-          child: Column(
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget> [
+            const SizedBox(
+              height: 10,
+            ),
+          ] + _classes.map((clas) => Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 20,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(
-                  className: 'hello',
-                  progress: 'bad',
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              
-              const SizedBox(
-                height: 16,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClassBox(className: clas.name, progress: clas.description),
+              )
             ],
-          ),
+          )).toList(),
         ),
       ),
     );

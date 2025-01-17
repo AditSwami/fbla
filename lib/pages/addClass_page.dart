@@ -75,19 +75,20 @@ class _AddclassPageState extends State<AddclassPage> {
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
                 child: Animatedgradientbox(
-                  height:10,
-                  width: 90,
-                  // child: Center(
-                  //   child: Text(
-                  //     'Generate',
-                  //     style: Theme.of(context).textTheme.labelMedium,
-                  //   ),
-                  // ),
+                  height:40,
+                  width: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0, left: 20),
+                    child: Text(
+                      'Generate',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ),
                 ),
                 onTap: () async {
                   String className = _className.text;
                   String? descriptionText = await Gemini.sendMessage(
-                      "Please give me 30 word description of the $className class. Don't mention the name of the class in the beginning in astricks. Don't give me bullet points.  The descirption is for a small box that will be a container in an app that allows students to access units and flashcards");
+                      "Please give me 30 word description of the $className class. Don't mention the name of the class in the beginning in astricks. Don't give me bullet points.  The descirption is for a small box that will be a container in an app that allows students to access units and flashcards.  Your word limit is 15.");
                   if (descriptionText != null) {
                     setState(() {
                       _description.text = descriptionText;
@@ -106,12 +107,11 @@ class _AddclassPageState extends State<AddclassPage> {
           onTap: () {
             ClassData clas = ClassData();
             UserData? user = context.read<UserProvider>().currentUser;
-            clas.creator = user.firstName;
+            clas.creator = user.id;
             clas.description = _description.text;
             clas.dateMade = DateTime.now();
             clas.name = _className.text;
             clas.id = customId;
-            clas.units = [];
 
             Firestore.addClass(clas);
 

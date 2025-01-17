@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+
+import '../../../data/Provider.dart';
 
 class Firestore {
   static final db = FirebaseFirestore.instance;
@@ -50,12 +54,16 @@ class Firestore {
   }
 
   static Future<ClassData?> addClass(ClassData clas) async {
+    final User fbu = FirebaseAuth.instance.currentUser!;
+    final String id = fbu.uid;
+
     db.collection('classes').doc(clas.id).set({
       'name': clas.name,
       'description': clas.description,
       'dateMade': clas.dateMade,
-      'units': clas.units,
       'creator': clas.creator,
+      'creator_id': id,
+      'units': []
     });
 
     return clas;
@@ -75,5 +83,35 @@ class Firestore {
     });
 
     return user;
+  }
+
+  static Future<List<ClassData>?> getClasses(BuildContext context) async {
+    List<ClassData> classes = [];
+
+    final query = await db
+        .collection('classes')
+        .orderBy("dateMade", descending: true)
+        .get();
+
+    for (var doc in query.docs) {
+      final data = doc.data();
+      List<UnitData> units = [];
+      final clas = ClassData();
+      clas.creator = data?['creator'];
+      clas.dateMade = (data?['dateMade'] as Timestamp).toDate();
+      clas.description = data?['description'];
+      clas.id = doc.id;
+      clas.name = data?['name'];
+      for (var unit in data?['units'] ?? []) {
+        UnitData units = UnitData();
+        units.id = unit.id;
+        units.name = unit['name'];
+        units.description = unit['descirpition'];
+
+        clas.units.add(unit);
+      }
+      classes.add(clas);
+    }
+    return classes;
   }
 }

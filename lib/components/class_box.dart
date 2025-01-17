@@ -53,17 +53,17 @@ class _ClassBoxState extends State<ClassBox> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            bottom: 10, top: 13, left: 18),
+                            bottom: 5, top: 13, left: 18),
                         child: Text(
                           widget.className,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 14.0, top: 8),
+                        padding: const EdgeInsets.only(left: 14.0),
                         child: Container(
                           constraints: const BoxConstraints(
-                              maxWidth: 200, maxHeight: 60),
+                              maxWidth: 300, maxHeight: 60),
                           child: Text(
                             widget.progress,
                             style: Theme.of(context).textTheme.titleSmall,

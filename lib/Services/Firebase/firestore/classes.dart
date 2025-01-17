@@ -14,7 +14,7 @@ class ClassData {
   ClassData();
   String id = "";
   String creator = "";
-  DateTime dateMade = "" as DateTime;
+  DateTime dateMade = DateTime.now();
   String description = "";
   String name = "";
   List<UnitData?> units = [];

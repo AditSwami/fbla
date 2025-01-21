@@ -57,79 +57,30 @@ class _HomepageState extends State<Homepage> {
         centerTitle: false,
         
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 20,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 10),
+              child: Text(
+                'Created classes',
+                style: Theme.of(context).textTheme.titleMedium
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 230.0),
-                child: Text(
-                  'Created classes',
-                  style: Theme.of(context).textTheme.titleMedium
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad',),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(className: 'hello', progress: 'bad'),
             ),
-              const SizedBox(
-                height: 16,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 240.0),
-                child: Text('Joined classes',
-                    style: Theme.of(context).textTheme.titleMedium),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(
-                  className: 'hello',
-                  progress: 'bad',
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(
-                  className: 'hello',
-                  progress: 'bad',
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(
-                  className: 'hello',
-                  progress: 'bad',
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: ClassBox(
-                  className: 'hello',
-                  progress: 'bad',
-                ),
-              ),
-            ],
-          ),
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text('Joined classes',
+                  style: Theme.of(context).textTheme.titleMedium),
+            ),
+          ],
         ),
       ),
     );

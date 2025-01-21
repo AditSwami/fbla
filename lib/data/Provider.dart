@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserProvider with ChangeNotifier {

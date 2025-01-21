@@ -1,12 +1,14 @@
+import 'package:fbla_2025/pages/class_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
 
 class ClassBox extends StatefulWidget {
-  const ClassBox({Key? key, required this.className, required this.progress})
+   ClassBox({Key? key, required this.className, required this.progress})
       : super(key: key);
 
-  final String className;
-  final String progress;
+  String className;
+  String progress;
 
   @override
   State<ClassBox> createState() => _ClassBoxState();
@@ -34,8 +36,10 @@ class _ClassBoxState extends State<ClassBox> {
         });
       },
       onTap: () {
-        // Navigate to the class page
-        Navigator.pushNamed(context, '/class', arguments: widget.className);
+        Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => ClassPage(className: widget.className)));
       },
       child: Container(
               height: 121,
@@ -77,8 +81,10 @@ class _ClassBoxState extends State<ClassBox> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
                       onTap: () {
-                        Navigator.pushNamed(context, '/class',
-                            arguments: widget.className);
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(builder: (context) => ClassPage(className: widget.className))
+                        );
                       },
                       child: Icon(
                         Icons.chevron_right_rounded,

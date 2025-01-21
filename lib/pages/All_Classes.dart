@@ -1,3 +1,4 @@
+import 'package:cupertino_refresh/cupertino_refresh.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/app_ui.dart';
 import 'package:fbla_2025/pages/addClass_page.dart';
@@ -19,11 +20,6 @@ class _AllClassesState extends State<AllClasses> {
     super.initState();
     Firestore.getClasses(context).then((classes) {
       setState(() {
-        if (classes == null || classes.isEmpty) {
-          print("No classes retrieved!");
-        } else {
-          print("Classes retrieved: ${classes.length}");
-        }
         _classes = classes ?? [];
       });
     });
@@ -86,7 +82,11 @@ class _AllClassesState extends State<AllClasses> {
         ],
         centerTitle: false,
       ),
-      body: SingleChildScrollView(
+      body: CupertinoRefresh(
+        physics: const AlwaysScrollableScrollPhysics(),
+        delayDuration: const Duration(
+          seconds: 1
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget> [
@@ -97,12 +97,19 @@ class _AllClassesState extends State<AllClasses> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 child: ClassBox(className: clas.name, progress: clas.description),
               )
             ],
           )).toList(),
         ),
+        onRefresh: () async {
+          Firestore.getClasses(context).then((classes) {
+            setState(() {
+              _classes = classes ?? [];
+            });
+          });
+        },
       ),
     );
   }

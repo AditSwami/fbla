@@ -1,4 +1,5 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
+import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/components/utils.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -71,8 +72,7 @@ class Authentication {
         showAlert("Incorrect Credentials",
             "This username and password do not match an account.", context);
       } else if (e.code == 'invalid-email') {
-        showAlert("Invalid Email",
-            "The email you input is invalid", context);
+        showAlert("Invalid Email", "The email you input is invalid", context);
       } else {
         print(e.code);
       }
@@ -88,5 +88,34 @@ class Authentication {
     } else {
       return null;
     }
+  }
+
+  static Future<UserData?> signInWithGoogle(BuildContext context) async {
+    UserData? user = UserData();
+
+    final gUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
+    final fbuCred =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    final fbu = fbuCred.user;
+
+    if (fbu == null) return null;
+
+    final fsu = await Firestore.getUser(fbu.uid);
+
+    if (fsu == null) return null;
+
+    user = await context.read<UserProvider>().getUser(fsu.id);
+
+    return user;
+  }
+
+  static Future<void> logOut() async {
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
   }
 }

@@ -5,7 +5,7 @@ import 'package:fbla_2025/Unit_box.dart';
 import 'package:fbla_2025/app_ui.dart';
 import 'package:fbla_2025/components/class_box.dart';
 import 'package:fbla_2025/components/gradientBox.dart';
-import 'package:fbla_2025/pages/AddUnitPage.dart';
+import 'package:fbla_2025/pages/Units/AddUnitPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

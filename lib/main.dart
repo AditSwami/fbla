@@ -2,7 +2,7 @@ import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:fbla_2025/firebase_options.dart';
 import 'package:fbla_2025/pages/Main_Page.dart';
-import 'package:fbla_2025/pages/addClass_page.dart';
+import 'package:fbla_2025/pages/Classes/addClass_page.dart';
 import 'package:fbla_2025/pages/auth/signUp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

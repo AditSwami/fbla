@@ -1,8 +1,10 @@
+import 'package:cupertino_refresh/cupertino_refresh.dart';
+import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
+import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fbla_2025/app_ui.dart';
 import 'package:fbla_2025/components/class_box.dart';
-
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -13,7 +15,22 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   String searchText = ' ';
+  List<ClassData> _createdClasses = [];
+  List<ClassData> _joinedClasses = [];
 
+  void init() {
+    super.initState();
+    Firestore.getUserCreatedClasses(context).then((clas) {
+      setState(() {
+         _createdClasses = clas!;
+      });
+    });
+    Firestore.getUserClasses(context).then((clas) {
+     setState(() {
+        _joinedClasses = clas!;
+     });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,34 +72,45 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
         centerTitle: false,
-        
       ),
-      body: SingleChildScrollView(
+      body: CupertinoRefresh(
+        physics: const AlwaysScrollableScrollPhysics(),
+        delayDuration: const Duration(seconds: 1),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 10),
-              child: Text(
-                'Created classes',
-                style: Theme.of(context).textTheme.titleMedium
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text('Joined classes',
-                  style: Theme.of(context).textTheme.titleMedium),
-            ),
-          ],
+          children: <Widget>[
+                const SizedBox(
+                  height: 10,
+                ),
+              ] +
+              _createdClasses
+                  .map((clas) => Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: ClassBox(
+                              clas: clas,
+                            ),
+                          )
+                        ],
+                      ))
+                  .toList(),
         ),
+        onRefresh: () async {
+          Firestore.getUserCreatedClasses(context).then((clas) {
+            setState(() {
+              _createdClasses = clas!;
+            });
+          });
+          Firestore.getUserClasses(context).then((clas) {
+            setState(() {
+              _joinedClasses = clas!;
+            });
+          });
+        },
       ),
+
     );
   }
 }

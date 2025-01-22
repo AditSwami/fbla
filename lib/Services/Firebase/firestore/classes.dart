@@ -17,6 +17,7 @@ class ClassData {
   String description = "";
   String name = "";
   Map<String, UnitData> units = {};
+  List<String> members = [];
 }
 
 class UnitData {

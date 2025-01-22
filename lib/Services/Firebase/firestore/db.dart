@@ -1,12 +1,9 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
+import 'package:fbla_2025/data/Provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-
-import '../../../data/Provider.dart';
 
 class Firestore {
   static final db = FirebaseFirestore.instance;
@@ -102,11 +99,11 @@ class Firestore {
       // ignore: unused_local_variable
       List<UnitData> units = [];
       final clas = ClassData();
-      clas.creator = data?['creator'];
-      clas.dateMade = (data?['dateMade'] as Timestamp).toDate();
-      clas.description = data?['description'];
+      clas.creator = data['creator'];
+      clas.dateMade = (data['dateMade'] as Timestamp).toDate();
+      clas.description = data['description'];
       clas.id = doc.id;
-      clas.name = data?['name'];
+      clas.name = data['name'];
       if(data['units'] != null){
         for (var unit in (data['units'] as Map<String, dynamic>).entries) {
           UnitData units = UnitData();
@@ -124,8 +121,84 @@ class Firestore {
     return classes;
   }
 
-  //TODO: fix maps cause maps dont go to maps in firestore, make firstore map
+  static Future<List<ClassData>?> getUserClasses(BuildContext context) async {
+    List<ClassData> classes = [];
+    UserData user = context.read<UserProvider>().getCurrentUser();
 
+    final query = await db
+        .collection('classes')
+        .orderBy("dateMade", descending: true)
+        .get();
+
+    for (var doc in query.docs) {
+      final data = doc.data();
+      // ignore: unused_local_variable
+      List<UnitData> units = [];
+      final clas = ClassData();
+      for(var member in data?['members'] ?? []){
+        if(member == user.id) {
+          clas.creator = data['creator'];
+          clas.dateMade = (data['dateMade'] as Timestamp).toDate();
+          clas.description = data['description'];
+          clas.id = doc.id;
+          clas.name = data['name'];
+          if (data['units'] != null) {
+            for (var unit in (data['units'] as Map<String, dynamic>).entries) {
+              UnitData units = UnitData();
+              String unitId = unit.key;
+              var uni = unit.value;
+              units.id = unitId;
+              units.name = uni['name'];
+              units.description = uni['description'];
+
+              clas.units[unitId] = units;
+            }
+          }
+        }
+      }
+      classes.add(clas);
+    }
+    return classes;
+  }
+
+  static Future<List<ClassData>?> getUserCreatedClasses (BuildContext context) async {
+    List<ClassData> classes = [];
+    UserData user = context.read<UserProvider>().getCurrentUser();
+
+    final query = await db
+        .collection('classes')
+        .orderBy("dateMade", descending: true)
+        .get();
+
+    for (var doc in query.docs) {
+      final data = doc.data();
+      // ignore: unused_local_variable
+      List<UnitData> units = [];
+      final clas = ClassData();
+          clas.creator = data['creator'];
+          clas.dateMade = (data['dateMade'] as Timestamp).toDate();
+          clas.description = data['description'];
+          clas.id = doc.id;
+          clas.name = data['name'];
+          if (data['units'] != null) {
+            for (var unit in (data['units'] as Map<String, dynamic>).entries) {
+              UnitData units = UnitData();
+              String unitId = unit.key;
+              var uni = unit.value;
+              units.id = unitId;
+              units.name = uni['name'];
+              units.description = uni['description'];
+
+              clas.units[unitId] = units;
+            }
+          } 
+      if(data['creator'] == user.id){
+        classes.add(clas);
+      }
+    }
+    return classes;
+  }
+  
   static Future<void> addUnit(UnitData unit, ClassData clas) async {
     Map<String, dynamic> terms = {};
     Map<String, dynamic> unitMap = {

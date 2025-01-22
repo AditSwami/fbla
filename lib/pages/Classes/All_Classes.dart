@@ -1,12 +1,12 @@
 import 'package:cupertino_refresh/cupertino_refresh.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/pages/addClass_page.dart';
+import 'package:fbla_2025/pages/Classes/addClass_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../Services/Firebase/firestore/classes.dart';
-import '../components/class_box.dart';
+import '../../Services/Firebase/firestore/classes.dart';
+import '../../components/class_box.dart';
 
 class AllClasses extends StatefulWidget {
   @override

@@ -1,6 +1,6 @@
 import 'package:fbla_2025/Services/Firebase/firestore/Auth/Auth.dart';
 import 'package:fbla_2025/components/authButton.dart';
-import 'package:fbla_2025/pages/Register.dart';
+import 'package:fbla_2025/pages/auth/Register.dart';
 import 'package:fbla_2025/pages/auth/logIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

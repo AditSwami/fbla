@@ -1,4 +1,4 @@
-import 'package:fbla_2025/pages/All_Classes.dart';
+import 'package:fbla_2025/pages/Classes/All_Classes.dart';
 import 'package:fbla_2025/pages/Settings_Page/Settings.dart';
 import 'package:fbla_2025/pages/homepage.dart';
 import 'package:flutter/material.dart';

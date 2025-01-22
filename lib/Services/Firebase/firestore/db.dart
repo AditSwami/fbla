@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -44,7 +46,7 @@ class Firestore {
         units.name = unit['name'];
         units.description = unit['descirpition'];
 
-        classes.units.add(unit);
+        classes.units[unit.id] = unit;
       }
 
       user.classes.add(classes);
@@ -57,13 +59,15 @@ class Firestore {
     final User fbu = FirebaseAuth.instance.currentUser!;
     final String id = fbu.uid;
 
+    Map<String, dynamic> units = {};
+
     db.collection('classes').doc(clas.id).set({
       'name': clas.name,
       'description': clas.description,
       'dateMade': clas.dateMade,
       'creator': clas.creator,
       'creator_id': id,
-      'units': []
+      'units': units
     });
 
     return clas;
@@ -95,6 +99,7 @@ class Firestore {
 
     for (var doc in query.docs) {
       final data = doc.data();
+      // ignore: unused_local_variable
       List<UnitData> units = [];
       final clas = ClassData();
       clas.creator = data?['creator'];
@@ -102,16 +107,88 @@ class Firestore {
       clas.description = data?['description'];
       clas.id = doc.id;
       clas.name = data?['name'];
-      for (var unit in data?['units'] ?? []) {
-        UnitData units = UnitData();
-        units.id = unit.id;
-        units.name = unit['name'];
-        units.description = unit['descirpition'];
+      if(data['units'] != null){
+        for (var unit in (data['units'] as Map<String, dynamic>).entries) {
+          UnitData units = UnitData();
+          String unitId = unit.key;
+          var uni = unit.value;
+          units.id = unitId;
+          units.name = uni['name'];
+          units.description = uni['description'];
 
-        clas.units.add(unit);
+          clas.units[unitId] = units;
+        }
       }
       classes.add(clas);
     }
     return classes;
+  }
+
+  //TODO: fix maps cause maps dont go to maps in firestore, make firstore map
+
+  static Future<void> addUnit(UnitData unit, ClassData clas) async {
+    Map<String, dynamic> terms = {};
+    Map<String, dynamic> unitMap = {
+      'id': unit.id,
+      'name': unit.name,
+      'description': unit.description,
+      'terms': terms,
+    };
+
+    // Use the field path to store the map correctly
+    await db.collection('classes').doc(clas.id).set({
+      'units': {unit.id: unitMap}
+    }, SetOptions(merge: true));
+  }
+
+  static Future<List<UnitData?>?> getUnits(BuildContext context, ClassData clas,
+      [DocumentSnapshot<Map<String, dynamic>>? snap]) async {
+    final docRef = db.collection('classes').doc(clas.id);
+    final docSnap = snap ?? await docRef.get();
+
+    List<UnitData?> units = [];
+
+    if (!docSnap.exists) {
+      return null;
+    }
+
+    final data = docSnap.data();
+    final unitsMap = data?['units'] as Map<String, dynamic>?;
+
+    if (unitsMap == null) {
+      return null;
+    }
+
+    // Convert the Firestore map into Map<String, UnitData>
+    unitsMap.map((key, value) {
+      final unitData = UnitData();
+      unitData.id = value['id'];
+      unitData.name = value['name'];
+      unitData.description = value['description'];
+      final termsMap = value['terms'] as Map<String, dynamic>?;
+
+      if (termsMap != null) {
+        unitData.terms = termsMap.map((termKey, termValue) {
+          final termData = TermData();
+          termData.termName = termValue['termName'];
+          termData.defName = termValue['defName'];
+          termData.termDataId = termValue['termDataId'];
+          return MapEntry(termData, termValue);
+        });
+      }
+
+      return MapEntry(key, unitData);
+    });
+
+    for (final entry in unitsMap.entries) {
+      var unit = entry.value;
+      UnitData uni = UnitData();
+      uni.id = entry.key;
+      uni.name = unit['name'];
+      uni.description = unit['description'];
+      units.add(uni);
+    }
+
+    return units;
   }
 }

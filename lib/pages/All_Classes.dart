@@ -98,7 +98,7 @@ class _AllClassesState extends State<AllClasses> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: ClassBox(className: clas.name, progress: clas.description),
+                child: ClassBox(clas: clas,),
               )
             ],
           )).toList(),

@@ -1,16 +1,36 @@
+import 'package:cupertino_refresh/cupertino_refresh.dart';
+import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
+import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
+import 'package:fbla_2025/Unit_box.dart';
 import 'package:fbla_2025/app_ui.dart';
 import 'package:fbla_2025/components/class_box.dart';
 import 'package:fbla_2025/components/gradientBox.dart';
-import 'package:fbla_2025/pages/Settings_Page/AddUnitPage.dart';
+import 'package:fbla_2025/pages/AddUnitPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ClassPage extends StatelessWidget {
-  ClassPage({super.key, required this.className});
+class ClassPage extends StatefulWidget {
+  ClassPage({super.key, required this.clas});
 
-  final String className;
+  final ClassData clas;
+
+  @override
+  State<ClassPage> createState() => _ClassPageState();
+}
+
+class _ClassPageState extends State<ClassPage> {
   String unitName = '';
   String unitDescirption = '';
+  List<UnitData?> _units = [];
+
+  void initState() {
+    super.initState();
+    Firestore.getUnits(context, widget.clas).then((unit) {
+      setState(() {
+        _units = unit!;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +63,7 @@ class ClassPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Text(
-                    className,
+                    widget.clas.name,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
@@ -77,17 +97,49 @@ class ClassPage extends StatelessWidget {
                 size: 35,
               ),
               onTap: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => Addunitpage()));
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => Addunitpage(
+                              clas: widget.clas,
+                            )));
               },
             ),
           )
         ],
       ),
-      body: Center(
+      body: CupertinoRefresh(
+        physics: const AlwaysScrollableScrollPhysics(),
+        delayDuration: const Duration(seconds: 1),
         child: Column(
-          children: [ClassBox(className: unitName, progress: unitDescirption)],
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+                const SizedBox(
+                  height: 10,
+                ),
+              ] +
+              _units
+                  .map((value) => Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: UnitBox(
+                              unit: value,
+                              clas: widget.clas,
+                            ),
+                          )
+                        ],
+                      ))
+                  .toList(),
         ),
+        onRefresh: () async {
+          Firestore.getUnits(context, widget.clas).then((unit) {
+            setState(() {
+              _units = unit!;
+            });
+          });
+        },
       ),
     );
   }

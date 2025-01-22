@@ -1,6 +1,5 @@
 class UserData {
   UserData();
-
   UserData.empty();
   String id = "";
   String firstName = "";
@@ -17,7 +16,7 @@ class ClassData {
   DateTime dateMade = DateTime.now();
   String description = "";
   String name = "";
-  List<UnitData?> units = [];
+  Map<String, UnitData> units = {};
 }
 
 class UnitData {
@@ -25,4 +24,12 @@ class UnitData {
   String id = "";
   String name = "";
   String description = "";
+  Map<TermData?, dynamic> terms = {};
+}
+
+class TermData {
+  TermData();
+  String termName = "";
+  String defName = "";
+  String termDataId = "";
 }

@@ -14,7 +14,7 @@ ThemeData darkMode = ThemeData(
   textTheme: TextTheme(
     titleLarge: GoogleFonts.jost(
       fontWeight: FontWeight.w700,
-      color: AppUi.primary,
+      color: AppUi.offWhite,
       fontSize: 30,
     ),
     titleMedium: GoogleFonts.jost(

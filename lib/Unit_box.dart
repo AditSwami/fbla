@@ -5,16 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
 
 // ignore: must_be_immutable
-class ClassBox extends StatefulWidget {
-  ClassBox({super.key, required this.clas});
+class UnitBox extends StatefulWidget {
+  UnitBox({super.key, required this.unit, required this.clas});
 
+  UnitData? unit;
   ClassData clas;
 
   @override
-  State<ClassBox> createState() => _ClassBoxState();
+  State<UnitBox> createState() => _ClassBoxState();
 }
 
-class _ClassBoxState extends State<ClassBox> {
+class _ClassBoxState extends State<UnitBox> {
   bool isTapped = false;
 
   @override
@@ -57,7 +58,7 @@ class _ClassBoxState extends State<ClassBox> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5, top: 13, left: 18),
                   child: Text(
-                    widget.clas.name,
+                    widget.unit!.name,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
@@ -67,7 +68,7 @@ class _ClassBoxState extends State<ClassBox> {
                     constraints:
                         const BoxConstraints(maxWidth: 300, maxHeight: 60),
                     child: Text(
-                      widget.clas.description,
+                      widget.unit!.description,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ),
@@ -82,8 +83,7 @@ class _ClassBoxState extends State<ClassBox> {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) =>
-                              ClassPage(clas: widget.clas)));
+                          builder: (context) => ClassPage(clas: widget.clas)));
                 },
                 child: Icon(
                   Icons.chevron_right_rounded,

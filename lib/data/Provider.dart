@@ -7,13 +7,11 @@ class UserProvider with ChangeNotifier {
   UserData _currentUser = UserData();
   bool _isAuth = false;
   List<ClassData> _classes = [];
-  List<UnitData> _units = [];
   List<UserData> _users = [];
 
   UserData get currentUser => _currentUser;
   bool get isAuth => _isAuth;
   List<ClassData> get classes => _classes;
-  List<UnitData> get units => _units;
   List<UserData> get users => _users;
 
   void setCurentUser(UserData user) {
@@ -42,13 +40,23 @@ class UserProvider with ChangeNotifier {
     }
   }
 
+  Future<List<ClassData>?> getClasses(BuildContext context) async {
+    if (classes.isNotEmpty) {
+      return classes;
+    } else {
+      _classes = (await Firestore.getClasses(context))!;
+      return classes;
+    }
+  }
+
   void setAuth(bool isAuthenticated) {
     _isAuth = isAuthenticated;
     notifyListeners();
   }
 
-  void addClass(ClassData clas) {
+  void addClass(ClassData clas) async {
     if (classes.indexWhere((e) => e.id == clas.id) < 0) {
+      await Firestore.addClass(clas);
       classes.add(clas);
     }
     notifyListeners();

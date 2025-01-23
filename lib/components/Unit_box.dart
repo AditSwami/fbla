@@ -1,4 +1,5 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
+import 'package:fbla_2025/pages/TermsAndDefs/UnitPage.dart';
 import 'package:fbla_2025/pages/Units/class_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class _ClassBoxState extends State<UnitBox> {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => ClassPage(clas: widget.clas)));
+                builder: (context) => Unitpage(unit: widget.unit!)));
       },
       child: Container(
         height: 121,

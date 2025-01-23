@@ -16,20 +16,23 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   String searchText = ' ';
   List<ClassData> _createdClasses = [];
+  // ignore: unused_field
   List<ClassData> _joinedClasses = [];
 
-  void init() {
+  void initState() {
     super.initState();
-    Firestore.getUserCreatedClasses(context).then((clas) {
-      setState(() {
-         _createdClasses = clas!;
+    if(mounted) {
+      Firestore.getUserCreatedClasses(context).then((clas) {
+        setState(() {
+          _createdClasses = clas ?? [];
+        });
       });
-    });
-    Firestore.getUserClasses(context).then((clas) {
-     setState(() {
-        _joinedClasses = clas!;
-     });
-    });
+      Firestore.getUserClasses(context).then((clas) {
+        setState(() {
+            _joinedClasses = clas ?? [];
+        });
+      });
+    }
   }
 
   @override
@@ -66,6 +69,7 @@ class _HomepageState extends State<Homepage> {
                   onChanged: (value) => {},
                   onSubmitted: (value) {},
                   placeholder: 'Search',
+                  //focusNode: FocusScopeNode().unfocus(disposition: UnfocusDisposition.scope),
                 ),
               ),
             ),

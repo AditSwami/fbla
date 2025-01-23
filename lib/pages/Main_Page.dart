@@ -1,6 +1,7 @@
+import 'package:fbla_2025/pages/Chat/ChatPage.dart';
 import 'package:fbla_2025/pages/Classes/All_Classes.dart';
 import 'package:fbla_2025/pages/Settings_Page/Settings.dart';
-import 'package:fbla_2025/pages/homepage.dart';
+import 'package:fbla_2025/pages/Classes/homepage.dart';
 import 'package:flutter/material.dart';
 
 import '../app_ui.dart';
@@ -19,6 +20,7 @@ class _MainPageState extends State<MainPage> {
     const Homepage(),
     AllClasses(),
     SettingsActual(),
+    Chatpage()
   ];
 
   void updateIndex(int newIndex) {
@@ -48,11 +50,11 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Settings',
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat_bubble_outline),
-            label: 'Settings',
+            label: 'Chat',
           ),
         ],
       ),

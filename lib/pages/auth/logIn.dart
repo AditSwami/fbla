@@ -3,7 +3,7 @@ import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/components/authButton.dart';
 import 'package:fbla_2025/components/button.dart';
 import 'package:fbla_2025/data/Provider.dart';
-import 'package:fbla_2025/pages/homepage.dart';
+import 'package:fbla_2025/pages/Classes/homepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

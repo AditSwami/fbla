@@ -1,9 +1,11 @@
 import 'package:cupertino_refresh/cupertino_refresh.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/app_ui.dart';
+import 'package:fbla_2025/data/Provider.dart';
 import 'package:fbla_2025/pages/Classes/addClass_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../Services/Firebase/firestore/classes.dart';
 import '../../components/class_box.dart';
@@ -15,10 +17,10 @@ class AllClasses extends StatefulWidget {
 
 class _AllClassesState extends State<AllClasses> {
   List<ClassData> _classes = [];
-
+  @override
   void initState() {
     super.initState();
-    Firestore.getClasses(context).then((classes) {
+    context.read<UserProvider>().getClasses(context).then((classes) {
       setState(() {
         _classes = classes ?? [];
       });
@@ -70,7 +72,7 @@ class _AllClassesState extends State<AllClasses> {
             child: GestureDetector(
               child: Icon(
                 Icons.add,
-                color: AppUi.primary,
+                color: AppUi.offWhite,
                 size: 35,
               ),
               onTap: () {

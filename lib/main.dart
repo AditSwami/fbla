@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/pages/homepage.dart'; 
+import 'package:fbla_2025/pages/Classes/homepage.dart'; 
 import 'package:fbla_2025/Services/Gemini.dart';
 
 void main() async {

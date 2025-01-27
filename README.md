@@ -2,6 +2,8 @@
 
 An app that lets you add all of your classes in one app to make it easier to study, as well as integrate many games in order to make learning easier.
 
+In this demo, I have created an app in which you can add all your classes as well as create classes.  The classes you create go into My classes, and the classes created by other users goes into Classes. I am yet to add a section in which you can add terms and there definitions however.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

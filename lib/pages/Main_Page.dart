@@ -34,6 +34,8 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: screens[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.grey[600],
+        //type: BottomNavigationBarType.shifting,
         elevation: 8,
         currentIndex: selectedIndex,
         onTap: updateIndex,

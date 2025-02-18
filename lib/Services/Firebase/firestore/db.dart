@@ -152,6 +152,8 @@ class Firestore {
               units.id = unitId;
               units.name = uni['name'];
               units.description = uni['description'];
+              units.terms = uni['terms'];
+              print('terms: ${units.terms}');
 
               clas.units[unitId] = units;
             }
@@ -191,6 +193,11 @@ class Firestore {
           units.id = unitId;
           units.name = uni['name'];
           units.description = uni['description'];
+          units.terms = uni['terms'];
+
+          print('terms in getClass: ${units.terms}');
+          print('name in getClass: ${units.name}');
+
 
           clas.units[unitId] = units;
         }
@@ -241,18 +248,10 @@ class Firestore {
       unitData.id = value['id'];
       unitData.name = value['name'];
       unitData.description = value['description'];
-      final termsMap = value['terms'] as Map<String, dynamic>?;
+      unitData.terms = value['terms'];
 
-      if (termsMap != null) {
-        unitData.terms = termsMap.map((termKey, termValue) {
-          final termData = TermData();
-          termData.termName = termValue['termName'];
-          termData.defName = termValue['defName'];
-          termData.termDataId = termValue['termDataId'];
-          return MapEntry(termData, termValue);
-        });
-      }
 
+      
       return MapEntry(key, unitData);
     });
 
@@ -262,6 +261,9 @@ class Firestore {
       uni.id = entry.key;
       uni.name = unit['name'];
       uni.description = unit['description'];
+      uni.terms = unit['terms'];
+
+
       units.add(uni);
     }
 

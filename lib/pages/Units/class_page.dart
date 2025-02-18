@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ClassPage extends StatefulWidget {
-  ClassPage({super.key, required this.clas});
+  const ClassPage({super.key, required this.clas});
 
   final ClassData clas;
 
@@ -21,6 +21,7 @@ class _ClassPageState extends State<ClassPage> {
   String unitDescirption = '';
   List<UnitData?> _units = [];
 
+  @override
   void initState() {
     super.initState();
     Firestore.getUnits(context, widget.clas).then((unit) {
@@ -117,7 +118,11 @@ class _ClassPageState extends State<ClassPage> {
                 ),
               ] +
               _units
-                  .map((value) => Column(
+                  .map((value) {
+                    // Debug print statement
+                    print('Debug UnitBox Input - Name: ${value?.name}, Description: ${value?.terms}');
+                    
+                    return Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
@@ -128,7 +133,8 @@ class _ClassPageState extends State<ClassPage> {
                             ),
                           )
                         ],
-                      ))
+                      );
+                  })
                   .toList(),
         ),
         onRefresh: () async {

@@ -42,6 +42,9 @@ class _ClassBoxState extends State<UnitBox> {
             context,
             CupertinoPageRoute(
                 builder: (context) => Unitpage(unit: widget.unit!)));
+        print('Unit_box : ${widget.unit!.terms}');
+        print('Unit_box name: ${widget.unit!.name}');
+
       },
       child: Container(
         height: 121,
@@ -75,23 +78,6 @@ class _ClassBoxState extends State<UnitBox> {
                   ),
                 ),
               ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 12.0, bottom: 65),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => ClassPage(clas: widget.clas)));
-                },
-                child: Icon(
-                  Icons.chevron_right_rounded,
-                  color: AppUi.grey,
-                  size: 30,
-                ),
-              ),
             ),
           ],
         ),

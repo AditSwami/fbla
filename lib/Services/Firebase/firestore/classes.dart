@@ -25,12 +25,6 @@ class UnitData {
   String id = "";
   String name = "";
   String description = "";
-  Map<TermData?, dynamic> terms = {};
+  Map<String, dynamic> terms = {};
 }
 
-class TermData {
-  TermData();
-  String termName = "";
-  String defName = "";
-  String termDataId = "";
-}

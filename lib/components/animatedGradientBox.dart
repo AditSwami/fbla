@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
+import 'package:flutter/scheduler.dart';
 
 class Animatedgradientbox extends StatefulWidget {
   const Animatedgradientbox(
@@ -27,6 +28,12 @@ class _AnimatedgradientboxState extends State<Animatedgradientbox>
   late Animation<Alignment> _brAlignAnim;
 
   final Widget? child;
+
+  @override
+  void dispose(){
+    super.dispose();
+    _controller.dispose();
+  }
 
   @override
   void initState() {
@@ -81,7 +88,7 @@ class _AnimatedgradientboxState extends State<Animatedgradientbox>
       return Stack(children: [
         widget.child != null
           ? ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
             child: widget.child!,
           )
           : const SizedBox.shrink(),

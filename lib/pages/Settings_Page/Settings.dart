@@ -191,6 +191,30 @@ class SettingsActual extends StatelessWidget {
                           bottom: BorderSide(
                               color: AppUi.grey.withValues(alpha: .5)))),
                   child: Text(
+                    'Log Out',
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ),
+                onTap: () {
+                  Authentication.logOut();
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      CupertinoPageRoute(builder: (context) => Signup()),
+                      (route) => route.isFirst);
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 15.0, top: 20),
+              child: GestureDetector(
+                child: Container(
+                  height: 40,
+                  width: 350,
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: AppUi.grey.withValues(alpha: .5)))),
+                  child: Text(
                     'Delete Account',
                     style: Theme.of(context)
                         .textTheme
@@ -200,27 +224,9 @@ class SettingsActual extends StatelessWidget {
                 ),
               ),
             ),
-            GestureDetector(
-              child: Container(
-                height: 40,
-                width: 350,
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: AppUi.grey.withValues(alpha: .5)))),
-                child: Text(
-                  'Appearance',
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
-              ),
-              onTap: () {
-                Authentication.logOut();
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    CupertinoPageRoute(builder: (context) => Signup()),
-                    (route) => route.isFirst);
-              },
-            ),
+            const SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),

@@ -14,25 +14,51 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  String searchText = ' ';
+  String searchText = '';
   List<ClassData> _createdClasses = [];
-  // ignore: unused_field
+
+   List<ClassData> _filteredClasses = [];
+
+  final TextEditingController _searchController = TextEditingController();
+
   List<ClassData> _joinedClasses = [];
 
+    @override
   void initState() {
     super.initState();
     if(mounted) {
       Firestore.getUserCreatedClasses(context).then((clas) {
         setState(() {
           _createdClasses = clas ?? [];
+          _filteredClasses = _createdClasses; // Move this inside setState
         });
       });
       Firestore.getUserClasses(context).then((clas) {
         setState(() {
-            _joinedClasses = clas ?? [];
+          _joinedClasses = clas ?? [];
         });
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();  // Add this
+    super.dispose();
+  }
+
+  void _filterClasses(String query) {
+    setState(() {
+      searchText = query;
+      if (query.isEmpty) {
+        _filteredClasses = _createdClasses;
+      } else {
+        _filteredClasses = _createdClasses
+            .where((clas) => clas.name.toLowerCase()
+                .contains(query.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   @override
@@ -64,12 +90,11 @@ class _HomepageState extends State<Homepage> {
               child: SizedBox(
                 width: 365,
                 child: CupertinoSearchTextField(
-                  backgroundColor: AppUi.grey.withValues(alpha: .1),
+                  backgroundColor: AppUi.grey.withAlpha(26),
                   style: Theme.of(context).textTheme.bodyMedium,
-                  onChanged: (value) => {},
-                  onSubmitted: (value) {},
-                  placeholder: 'Search',
-                  //focusNode: FocusScopeNode().unfocus(disposition: UnfocusDisposition.scope),
+                  onChanged: _filterClasses,
+                  controller: _searchController,
+                  placeholder: 'Search classes',
                 ),
               ),
             ),
@@ -80,41 +105,63 @@ class _HomepageState extends State<Homepage> {
       body: CupertinoRefresh(
         physics: const AlwaysScrollableScrollPhysics(),
         delayDuration: const Duration(seconds: 1),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-                const SizedBox(
-                  height: 10,
+        child: SingleChildScrollView(  // Add this wrapper
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'Created Classes',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppUi.primary,
+                  ),
                 ),
-              ] +
-              _createdClasses
-                  .map((clas) => Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: ClassBox(
-                              clas: clas,
-                            ),
-                          )
-                        ],
-                      ))
-                  .toList(),
+              ),
+              Column(
+                children: _filteredClasses
+                    .map((clas) => Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ClassBox(clas: clas),
+                        ))
+                    .toList(),
+              ),
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'Joined Classes',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppUi.primary,
+                  ),
+                ),
+              ),
+              Column(
+                children: _joinedClasses
+                    .map((clas) => Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ClassBox(clas: clas),
+                        ))
+                    .toList(),
+              ),
+            ],
+          ),
         ),
         onRefresh: () async {
-          Firestore.getUserCreatedClasses(context).then((clas) {
+          await Firestore.getUserCreatedClasses(context).then((clas) {
             setState(() {
-              _createdClasses = clas!;
+              _createdClasses = clas ?? [];
+              _filteredClasses = _createdClasses;
             });
           });
-          Firestore.getUserClasses(context).then((clas) {
+          await Firestore.getUserClasses(context).then((clas) {
             setState(() {
-              _joinedClasses = clas!;
+              _joinedClasses = clas ?? [];
             });
           });
         },
       ),
-
     );
   }
 }

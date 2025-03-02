@@ -1,10 +1,17 @@
+import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
+import 'package:fbla_2025/Services/progress_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
 
 class MatchingGame extends StatefulWidget {
-  const MatchingGame({super.key, required this.terms});
+  const MatchingGame({
+    super.key, 
+    required this.terms,
+    required this.unit,  // Add this
+  });
 
   final Map<String, dynamic> terms;
+  final UnitData unit;  // Add this
 
   @override
   State<MatchingGame> createState() => _MatchingGameState();
@@ -88,6 +95,9 @@ class _MatchingGameState extends State<MatchingGame> {
     checkAchievements(duration);
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
+
+    // Save the score before showing dialog
+    ProgressService.saveScore(widget.unit.id, 'match', score);
 
     showDialog(
       context: context,

@@ -36,6 +36,7 @@ class Firestore {
       classes.creator = clas['creator'];
       classes.description = clas['description'];
       classes.name = clas['name'];
+      classes.members = clas['members'];
 
       for (var unit in clas['units'] ?? []) {
         UnitData units = UnitData();
@@ -98,8 +99,13 @@ class Firestore {
 
     for (var doc in query.docs) {
       final data = doc.data();
-      // ignore: unused_local_variable
-      List<UnitData> units = [];
+      final members = data['members'] as List<dynamic>? ?? [];
+      
+      // Skip if user is already a member
+      if (members.contains(user.id)) {
+        continue;
+      }
+
       final clas = ClassData();
       clas.creator = data['creator'];
       clas.dateMade = (data['dateMade'] as Timestamp).toDate();
@@ -134,33 +140,32 @@ class Firestore {
 
     for (var doc in query.docs) {
       final data = doc.data();
-      // ignore: unused_local_variable
-      List<UnitData> units = [];
-      final clas = ClassData();
-      for (var member in data['members'] ?? []) {
-        if (member == user.id) {
-          clas.creator = data['creator'];
-          clas.dateMade = (data['dateMade'] as Timestamp).toDate();
-          clas.description = data['description'];
-          clas.id = doc.id;
-          clas.name = data['name'];
-          if (data['units'] != null) {
-            for (var unit in (data['units'] as Map<String, dynamic>).entries) {
-              UnitData units = UnitData();
-              String unitId = unit.key;
-              var uni = unit.value;
-              units.id = unitId;
-              units.name = uni['name'];
-              units.description = uni['description'];
-              units.terms = uni['terms'];
-              print('terms: ${units.terms}');
+      
+      // Only process if user is a member and not the creator
+      if ((data['members'] ?? []).contains(user.id) && data['creator'] != user.id) {
+        final clas = ClassData();
+        clas.creator = data['creator'];
+        clas.dateMade = (data['dateMade'] as Timestamp).toDate();
+        clas.description = data['description'];
+        clas.id = doc.id;
+        clas.name = data['name'];
+        clas.members = data['members'];
+        
+        if (data['units'] != null) {
+          for (var unit in (data['units'] as Map<String, dynamic>).entries) {
+            UnitData units = UnitData();
+            String unitId = unit.key;
+            var uni = unit.value;
+            units.id = unitId;
+            units.name = uni['name'];
+            units.description = uni['description'];
+            units.terms = uni['terms'];
 
-              clas.units[unitId] = units;
-            }
+            clas.units[unitId] = units;
           }
         }
+        classes.add(clas);  // Only add if user is a member
       }
-      classes.add(clas);
     }
     return classes;
   }
@@ -183,6 +188,7 @@ class Firestore {
       clas.creator = data['creator'];
       clas.dateMade = (data['dateMade'] as Timestamp).toDate();
       clas.description = data['description'];
+      clas.members = data['members'];
       clas.id = doc.id;
       clas.name = data['name'];
       if (data['units'] != null) {
@@ -194,10 +200,6 @@ class Firestore {
           units.name = uni['name'];
           units.description = uni['description'];
           units.terms = uni['terms'];
-
-          print('terms in getClass: ${units.terms}');
-          print('name in getClass: ${units.name}');
-
 
           clas.units[unitId] = units;
         }
@@ -268,5 +270,21 @@ class Firestore {
     }
 
     return units;
+  }
+
+  static Future<void> addTerm( Map<String, dynamic> term, UnitData unit) async {
+    // Use the field path to store the map correctly
+    await db.collection('classes').doc(unit.id).set({
+      'units.${unit.id}.terms': {term.keys: term.values}
+    }, SetOptions(merge: true));
+  }
+
+  static Future<void> joinClass(ClassData clas, BuildContext context) async {
+    UserData user = context.read<UserProvider>().getCurrentUser();
+    
+    await db.collection('classes').doc(clas.id).update({
+      'members': FieldValue.arrayUnion([user.id])
+    });
+
   }
 }

@@ -1,16 +1,13 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/data/Provider.dart';
-import 'package:fbla_2025/firebase_options.dart';
+import 'package:fbla_2025/Services/firebase_options.dart';
 import 'package:fbla_2025/pages/Main_Page.dart';
-import 'package:fbla_2025/pages/Classes/addClass_page.dart';
 import 'package:fbla_2025/pages/auth/signUp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/pages/Classes/homepage.dart'; 
 import 'package:fbla_2025/Services/Gemini.dart';
 
 void main() async {
@@ -30,6 +27,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  @override
   void initState() {
     super.initState();
     initializeApp();
@@ -60,11 +59,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: darkMode,
       themeMode: ThemeMode.system,
-      home: context.watch<UserProvider>().isAuth ? MainPage() : Signup(),
-      routes: {
-        '/home': (context) => const Homepage(),
-        '/newClass': (context) => const AddclassPage(),
-      },
+      home: context.watch<UserProvider>().isAuth ? const MainPage() : Signup(),
     );
   }
 }

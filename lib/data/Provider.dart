@@ -7,7 +7,7 @@ class UserProvider with ChangeNotifier {
   UserData _currentUser = UserData();
   bool _isAuth = false;
   List<ClassData> _classes = [];
-  List<UserData> _users = [];
+  final List<UserData> _users = [];
 
   UserData get currentUser => _currentUser;
   bool get isAuth => _isAuth;
@@ -60,5 +60,32 @@ class UserProvider with ChangeNotifier {
       classes.add(clas);
     }
     notifyListeners();
+  }
+
+  Future<void> joinClass(ClassData classData, BuildContext context) async {
+    // First check if already a member
+    if (!_currentUser.classes.any((clas) => clas?.id == classData.id)) {
+      // Only add if not already a member
+      _currentUser.classes.add(classData);
+      notifyListeners();
+      // Update Firestore
+      await Firestore.joinClass(classData, context);
+    }
+  }
+
+  // Add this method to sync with Firestore
+  Future<void> loadJoinedClasses(BuildContext context) async {
+    final joinedClasses = await Firestore.getUserClasses(context);
+    if (joinedClasses != null) {
+      print('Loaded joined classes: ${joinedClasses.map((c) => c.id).toList()}');
+      _currentUser.classes = joinedClasses.map((c) => c).toList();
+      notifyListeners();
+    }
+  }
+
+  bool isClassMember(String classId) {
+    print('Checking membership for ID: $classId');
+    print('Current classes: ${_currentUser.classes.map((c) => c?.id).toList()}');
+    return _currentUser.classes.any((clas) => clas?.id == classId);
   }
 }

@@ -1,6 +1,5 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/pages/TermsAndDefs/UnitPage.dart';
-import 'package:fbla_2025/pages/Units/class_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
@@ -41,7 +40,7 @@ class _ClassBoxState extends State<UnitBox> {
         Navigator.push(
             context,
             CupertinoPageRoute(
-                builder: (context) => Unitpage(unit: widget.unit!)));
+                builder: (context) => Unitpage(unit: widget.unit!, clas: widget.clas,)));
         print('Unit_box : ${widget.unit!.terms}');
         print('Unit_box name: ${widget.unit!.name}');
 

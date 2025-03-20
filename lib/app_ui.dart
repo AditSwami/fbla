@@ -7,6 +7,7 @@ class AppUi {
   static final grey = Color.fromARGB(255, 158, 158, 158);
   static final primary = Color.fromRGBO(112, 255, 131, 1);
   static final offWhite = Color.fromARGB(255, 239, 239, 239);
+  static final error = Colors.red;
 }
 
 ThemeData darkMode = ThemeData(

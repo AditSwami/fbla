@@ -13,6 +13,7 @@ class ClassData {
   ClassData();
   String id = "";
   String creator = "";
+  String creator_id = "";
   DateTime dateMade = DateTime.now();
   String description = "";
   String name = "";
@@ -26,5 +27,45 @@ class UnitData {
   String name = "";
   String description = "";
   Map<String, dynamic> terms = {};
+  int testScore = 0;  // Single test score as integer
+  
+  double get score {
+    return testScore.toDouble();
+  }
 }
+
+class PostData{
+  PostData(){
+    date = DateTime.now().millisecondsSinceEpoch;
+  }
+  String uid = "";
+  String id = "";
+  String title = "";
+  String type = "Competition";
+  int date = 0;
+  String description = "";
+  List<String> pics = [];
+  List<String> likes = [];
+  List<CommentData> comments = [];
+
+  UserData user = UserData();
+}
+
+class CommentData{
+  String content = "";
+  String uid = "";
+  String id = "";
+  int time = 0;
+  List<String> likes = [];
+  List<ReplyData> replies = [];
+}
+
+class ReplyData{
+  String content = "";
+  String uid = "";
+  String id = "";
+  int time = 0;
+  List<String> likes = [];
+}
+
 

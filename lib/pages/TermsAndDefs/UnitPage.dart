@@ -1,17 +1,22 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
+import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/Services/progress_service.dart';
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/components/TermsBox.dart';
+import 'package:fbla_2025/components/terms/TermsBox.dart';
 import 'package:fbla_2025/pages/Games/CrosswordGame.dart';
 import 'package:fbla_2025/pages/Games/MatchingGame.dart';
 import 'package:fbla_2025/pages/Games/QuizGame.dart';
+import 'package:fbla_2025/pages/TermsAndDefs/Add_Terms.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class Unitpage extends StatefulWidget {
-  Unitpage({super.key, required this.unit});
+  Unitpage({super.key, required this.unit, required this.clas});
 
   UnitData unit;
+
+  ClassData clas;
 
   @override
   State<Unitpage> createState() => _UnitpageState();
@@ -31,11 +36,25 @@ class _UnitpageState extends State<Unitpage> {
     _loadUnitScores();
   }
 
+  Future<void> _refreshPage() async {
+    // Refresh terms
+    final updatedTerms = await Firestore.getUnitTerms(widget.clas.id, widget.unit.id);
+    if (mounted && updatedTerms != null) {
+      setState(() {
+        widget.unit.terms = updatedTerms;
+        termsAndDefs = Map<String, dynamic>.from(updatedTerms);
+      });
+    }
+    await _loadUnitScores();
+  }
+
   Future<void> _loadUnitScores() async {
     final scores = await ProgressService.getUnitScores(widget.unit.id);
-    setState(() {
-      unitScores = scores;
-    });
+    if (mounted) {  // Add this check
+      setState(() {
+        unitScores = scores;
+      });
+    }
   }
 
   // Add before the AppBar in build method
@@ -87,113 +106,168 @@ class _UnitpageState extends State<Unitpage> {
         centerTitle: false,
         // Add to AppBar actions
         actions: [
-          IconButton(
-            icon: const Icon(Icons.help_outline),
-            onPressed: () => _showStudyTips(),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+              child: Icon(
+                Icons.add,
+                color: AppUi.offWhite,
+                size: 35,
+              ),
+              onTap: () => Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
+                ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: IconButton(
+              icon: const Icon(Icons.help_outline),
+              onPressed: () => _showStudyTips(),
+            ),
           ),
         ],
       ),
       // Add in build method after AppBar
       body: Semantics(
         label: 'Unit study page for ${widget.unit.name}',
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 35.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppUi.grey.withValues(alpha: .3),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _buildProgressHeader(),
-                    ],
-                  )
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 35.0, top: 25),
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: AppUi.grey
-                ),
-              ),
-              if (entries.isNotEmpty) ...[
-                Padding(
-                  padding: const EdgeInsets.only(top: 30.0, left: 35),
-                  child: Termsbox(
-                    term: entries[currentIndex].key.toString(),
-                    def: entries[currentIndex].value.toString(),
-                  ),
-                ),
-                const SizedBox(height: 20),
+        child: RefreshIndicator(
+          color: AppUi.primary,
+          backgroundColor: AppUi.backgroundDark,
+          onRefresh: _refreshPage,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(), // Add this
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: currentIndex > 0 ? Colors.white : Colors.grey,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 35.0, top: 25),
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: AppUi.grey
                       ),
-                      onPressed: currentIndex > 0
-                          ? () {
-                              setState(() {
-                                currentIndex--;
-                              });
-                            }
-                          : null,
                     ),
-                    const SizedBox(width: 40),
-                    IconButton(
-                      icon: Icon(
-                        Icons.arrow_forward_ios,
-                        color: currentIndex < entries.length - 1 
-                            ? Colors.white 
-                            : Colors.grey,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0, top: 16),
+                      child: Text(
+                        widget.clas.creator,
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      onPressed: currentIndex < entries.length - 1
-                          ? () {
-                              setState(() {
-                                currentIndex++;
-                              });
-                            }
-                          : null,
                     ),
                   ],
                 ),
-                const SizedBox(height: 40),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                if (entries.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0, left: 35),
+                    child: Termsbox(
+                      term: entries[currentIndex].key.toString(),
+                      def: entries[currentIndex].value.toString(),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _gameButton(
-                        'Match',
-                        Icons.grid_view_rounded,
-                        () => _navigateToGame(MatchingGame(
-                          terms: termsAndDefs,
-                          unit: widget.unit,  // Add unit here
-                        )),
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: currentIndex > 0 ? Colors.white : Colors.grey,
+                        ),
+                        onPressed: currentIndex > 0
+                            ? () {
+                                setState(() {
+                                  currentIndex--;
+                                });
+                              }
+                            : null,
                       ),
-                      _gameButton(
-                        'Crossword',
-                        Icons.edit_square,
-                        () => _navigateToGame(CrosswordGame(terms: termsAndDefs)),
-                      ),
-                      _gameButton(
-                        'Quiz',
-                        Icons.quiz_rounded,
-                        () => _navigateToGame(QuizGame(terms: termsAndDefs)),
+                      const SizedBox(width: 40),
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_forward_ios,
+                          color: currentIndex < entries.length - 1 
+                              ? Colors.white 
+                              : Colors.grey,
+                        ),
+                        onPressed: currentIndex < entries.length - 1
+                            ? () {
+                                setState(() {
+                                  currentIndex++;
+                                });
+                              }
+                            : null,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 40),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _gameButton(
+                          'Match',
+                          Icons.grid_view_rounded,
+                          () => _navigateToGame(MatchingGame(
+                            terms: termsAndDefs,
+                            unit: widget.unit,  // Add unit here
+                          )),
+                        ),
+                        _gameButton(
+                          'Crossword',
+                          Icons.edit_square,
+                          () => _navigateToGame(CrosswordGame(terms: termsAndDefs)),
+                        ),
+                        _gameButton(
+                          'Quiz',
+                          Icons.quiz_rounded,
+                          () => _navigateToGame(
+                            QuizGame(
+                              terms: termsAndDefs,
+                              unit: widget.unit,
+                              clas: widget.clas,
+                              )
+                            ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                const SizedBox(
+                  height: 30,
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 35.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppUi.grey.withValues(alpha: .1),
+                      borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Column(  // Changed from Row to Column
+                      children: [
+                        _buildProgressHeader(),  // Add progress header
+                        Divider(  // Add a divider between the two sections
+                          color: AppUi.grey.withOpacity(0.2),
+                          thickness: 1,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: _buildUnitScoreCard(),
+                        ),  // Keep the score card
+                      ],
+                    )
+                  ),
+                ),
+                const SizedBox(
+                  height: 80
+                )
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -201,11 +275,20 @@ class _UnitpageState extends State<Unitpage> {
   }
 
   Future<void> _navigateToGame(Widget game) async {
-    await _loadUnitScores();
-     Navigator.push(
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => game),
     );
+    
+    if (result != null && game is QuizGame) {
+      setState(() {
+        widget.unit.testScore = (widget.unit.testScore + result) ~/ 2;
+      });
+    }
+    
+    // Reload unit scores for other games
+    await _loadUnitScores();
+    setState(() {});
   }
 
   void _showStudyTips() {
@@ -289,4 +372,71 @@ class _UnitpageState extends State<Unitpage> {
       ),
     );
   }
+
+   Widget _buildUnitScoreCard() {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 35.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppUi.grey.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Test Score',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '${widget.unit.score.toStringAsFixed(0)}%',
+                      style: Theme.of(context).textTheme.bodyLarge
+                      ),
+                  ],
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit, color: AppUi.primary),
+                  onPressed: () => _updateScore(context),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    
+    void _updateScore(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: AppUi.backgroundDark,
+          title: Text('Update Test Score',
+              style: Theme.of(context).textTheme.titleLarge),
+          content: TextField(
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: 'Score (0-100)',
+              labelStyle: TextStyle(color: AppUi.offWhite),
+            ),
+            style: TextStyle(color: AppUi.offWhite),
+            onSubmitted: (value) async {
+              final score = int.tryParse(value);
+              if (score != null && score >= 0 && score <= 100) {
+                await Firestore.updateUnitTestScore(score, widget.unit, widget.clas);
+                setState(() {
+                  widget.unit.testScore = score;
+                });
+                Navigator.pop(context);
+              }
+            },
+          ),
+        ),
+      );
+    }
 }

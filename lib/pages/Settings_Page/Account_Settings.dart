@@ -1,5 +1,5 @@
 import 'package:fbla_2025/Services/Firebase/firestore/Auth/Auth.dart';
-import 'package:fbla_2025/components/button.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/pages/auth/signUp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

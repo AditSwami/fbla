@@ -41,12 +41,12 @@ class SettingsActual extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 28.0, top: 30),
                     child: Text(
-                      'Classes Created:',
+                      'Units Created:',
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 50.0, right: 26),
+                    padding: const EdgeInsets.only(top: 50.0, right: 5),
                     child: Text(
                       'Followers:',
                       style: Theme.of(context).textTheme.titleMedium,

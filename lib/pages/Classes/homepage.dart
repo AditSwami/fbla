@@ -1,10 +1,11 @@
 import 'package:cupertino_refresh/cupertino_refresh.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
+import 'package:fbla_2025/pages/Classes/addClass_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/components/class_box.dart';
+import 'package:fbla_2025/components/Boxes/class_box.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -94,12 +95,28 @@ class _HomepageState extends State<Homepage> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   onChanged: _filterClasses,
                   controller: _searchController,
-                  placeholder: 'Search classes',
+                  placeholder: 'Search',
                 ),
               ),
             ),
           ],
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 45.0, right: 15.0),
+            child: GestureDetector(
+              child: Icon(
+                Icons.add,
+                color: AppUi.offWhite,
+                size: 35,
+              ),
+              onTap: () {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => const AddclassPage()));
+              },
+            ),
+          )
+        ],
         centerTitle: false,
       ),
       body: CupertinoRefresh(
@@ -109,14 +126,12 @@ class _HomepageState extends State<Homepage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0),
                 child: Text(
                   'Created Classes',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppUi.primary,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium
                 ),
               ),
               Column(
@@ -132,9 +147,7 @@ class _HomepageState extends State<Homepage> {
                 padding: const EdgeInsets.only(left: 20.0),
                 child: Text(
                   'Joined Classes',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppUi.primary,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium
                 ),
               ),
               Column(

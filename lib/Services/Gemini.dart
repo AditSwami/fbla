@@ -8,7 +8,7 @@ class Gemini {
   String text = "";
 
   static void init() {
-    model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+    model = GenerativeModel(model: 'gemini-1.5-pro', apiKey: apiKey);
     chat = model?.startChat();
   }
 

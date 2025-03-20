@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
-import 'package:flutter/scheduler.dart';
 
 class Animatedgradientbox extends StatefulWidget {
   const Animatedgradientbox(

@@ -1,7 +1,7 @@
 import 'package:cupertino_refresh/cupertino_refresh.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
-import 'package:fbla_2025/components/Unit_box.dart';
+import 'package:fbla_2025/components/Boxes/Unit_box.dart';
 import 'package:fbla_2025/app_ui.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:fbla_2025/pages/Units/AddUnitPage.dart';
@@ -56,7 +56,7 @@ class _ClassPageState extends State<ClassPage> {
     
     setState(() {
       _isMember = isMember;
-      _isCreator = widget.clas.creator == user.id;
+      _isCreator = widget.clas.creator_id == user.id;
       _isLoading = false;
     });
   }
@@ -134,9 +134,10 @@ class _ClassPageState extends State<ClassPage> {
           children: [
             const SizedBox(height: 70),
             Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
+                  padding: const EdgeInsets.only(left: 5.0),
                   child: GestureDetector(
                     child: const Icon(
                       Icons.chevron_left_rounded,
@@ -145,11 +146,15 @@ class _ClassPageState extends State<ClassPage> {
                     onTap: () => Navigator.pop(context),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    widget.clas.name,
-                    style: Theme.of(context).textTheme.titleLarge,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 130.0),
+                    child: Text(
+                      widget.clas.name,
+                      style: Theme.of(context).textTheme.titleLarge,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ],

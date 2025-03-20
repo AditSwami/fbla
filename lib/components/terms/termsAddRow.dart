@@ -1,20 +1,22 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/app_ui.dart';
-import 'package:fbla_2025/components/Unit_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TermsAddRow extends StatelessWidget{
+class TermsAddRow extends StatelessWidget {
   TermsAddRow({super.key, required this.unit});
 
-  UnitData unit;
-  final TextEditingController _term = TextEditingController();
-  final TextEditingController _definition = TextEditingController();
-    @override
+  final UnitData unit;
+  // Make controllers accessible
+  final TextEditingController term = TextEditingController();
+  final TextEditingController definition = TextEditingController();
+
+  // Update the CupertinoTextField controllers
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: 320,
-      height: 50,
+      height: 60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: AppUi.grey.withValues(alpha: .1)
@@ -31,10 +33,10 @@ class TermsAddRow extends StatelessWidget{
           ),
           //term
           Container(
-            height: 30,
+            height: 40,
             width: 120,
             child: CupertinoTextField(
-              controller: _term,
+              controller: term,  // Updated from _term
               placeholder: 'Term',
               style: Theme.of(context).textTheme.bodyMedium,
               onTapOutside: (event) {
@@ -43,7 +45,7 @@ class TermsAddRow extends StatelessWidget{
             ),
           ),
           Text(
-            'Term:',
+            'Definition:',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(
@@ -51,10 +53,10 @@ class TermsAddRow extends StatelessWidget{
           ),
           //def
           Container(
-            height: 30,
+            height: 40,
             width: 120,
             child: CupertinoTextField(
-              controller: _definition,
+              controller: definition,  // Updated from _definition
               placeholder: 'Definition',
               style: Theme.of(context).textTheme.bodyMedium,
             ),

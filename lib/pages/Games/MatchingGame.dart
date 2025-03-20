@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/progress_service.dart';
 import 'package:flutter/material.dart';
@@ -24,17 +26,31 @@ class _MatchingGameState extends State<MatchingGame> {
   String? selectedDef;
   List<bool> termMatched = [];
   List<bool> defMatched = [];
+  // Add these variables at the start of _MatchingGameState
   int score = 0;
   DateTime? startTime;
-  
+  int maxScore = 100; // Maximum possible score
+  int timeLimit = 180; // 3 minutes time limit in seconds
+  // Add this variable to track current time
+  late ValueNotifier<int> _secondsElapsed;
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
     startTime = DateTime.now();
+    _secondsElapsed = ValueNotifier<int>(0);
+    _startTimer();
     terms = widget.terms.keys.toList()..shuffle();
     definitions = widget.terms.values.map((e) => e.toString()).toList()..shuffle();
     termMatched = List.generate(terms.length, (index) => false);
     defMatched = List.generate(definitions.length, (index) => false);
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _secondsElapsed.value = DateTime.now().difference(startTime!).inSeconds;
+    });
   }
 
   void checkMatch() {
@@ -45,18 +61,15 @@ class _MatchingGameState extends State<MatchingGame> {
         setState(() {
           termMatched[termIndex] = true;
           defMatched[defIndex] = true;
-          score += 10;
           
           // Check if all matches are complete
           if (termMatched.every((matched) => matched)) {
+            _calculateFinalScore();
             _showCompletionDialog();
           }
         });
       } else {
         // Wrong match feedback
-        setState(() {
-          score = score > 0 ? score - 5 : 0;  // Penalty for wrong match
-        });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Try again!'),
@@ -72,31 +85,35 @@ class _MatchingGameState extends State<MatchingGame> {
     }
   }
 
-  // Add after score variable
-  bool isSpeedAchievement = false;
-  bool isPerfectAchievement = false;
+  void _calculateFinalScore() {
+    final endTime = DateTime.now();
+    final duration = endTime.difference(startTime!);
+    final secondsTaken = duration.inSeconds;
 
-  void checkAchievements(Duration duration) {
-    // Speed achievement - complete under 1 minute
-    if (duration.inSeconds < 60) {
-      isSpeedAchievement = true;
-      score += 20;
+    // Calculate score based on time taken
+    if (secondsTaken <= timeLimit) {
+      // Score decreases linearly as time increases
+      score = ((timeLimit - secondsTaken) * maxScore ~/ timeLimit).clamp(0, maxScore);
+    } else {
+      // Minimum score of 10 if time limit exceeded
+      score = 10;
     }
-    // Perfect match achievement - no wrong attempts
-    if (score == terms.length * 10) {
-      isPerfectAchievement = true;
-      score += 30;
+
+    // Add bonus points for quick completion
+    if (secondsTaken < 60) {
+      score += 20; // Speed bonus
+    } else if (secondsTaken < 120) {
+      score += 10; // Medium speed bonus
     }
   }
 
   void _showCompletionDialog() {
     final endTime = DateTime.now();
     final duration = endTime.difference(startTime!);
-    checkAchievements(duration);
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
 
-    // Save the score before showing dialog
+    // Save the score
     ProgressService.saveScore(widget.unit.id, 'match', score);
 
     showDialog(
@@ -112,30 +129,44 @@ class _MatchingGameState extends State<MatchingGame> {
             Text('Time: ${minutes}m ${seconds}s'),
             const SizedBox(height: 8),
             Text('Score: $score'),
-            if (isSpeedAchievement) ...[
+            if (duration.inSeconds < 60) ...[
               const SizedBox(height: 8),
               Text('🏆 Speed Demon! +20 points',
                 style: TextStyle(color: AppUi.primary)),
-            ],
-            if (isPerfectAchievement) ...[
+            ] else if (duration.inSeconds < 120) ...[
               const SizedBox(height: 8),
-              Text('⭐ Perfect Match! +30 points',
+              Text('⚡ Quick Matcher! +10 points',
                 style: TextStyle(color: AppUi.primary)),
             ],
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context); // Close dialog
-              Navigator.pop(context); // Return to UnitPage
-            },
-            child: Text('OK',
-              style: TextStyle(color: AppUi.primary)),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: AppUi.primary
+            ),
+            child: TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: Text('OK',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: AppUi.backgroundDark
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _secondsElapsed.dispose();
+    super.dispose();
   }
 
   @override
@@ -143,7 +174,8 @@ class _MatchingGameState extends State<MatchingGame> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppUi.backgroundDark,
-        title: Text('Matching Game', style: Theme.of(context).textTheme.titleLarge),
+        centerTitle: false,
+        title: Text('Matching', style: Theme.of(context).textTheme.titleLarge),
         actions: [
           Center(
             child: Padding(
@@ -156,54 +188,82 @@ class _MatchingGameState extends State<MatchingGame> {
           ),
         ],
       ),
-      body: Row(
+      body: Column(
         children: [
-          // Terms Column
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: terms.length,
-              itemBuilder: (context, index) {
-                if (termMatched[index]) return const SizedBox.shrink();
-                return Card(
-                  color: selectedTerm == terms[index] 
-                      ? AppUi.primary.withOpacity(0.3)
-                      : AppUi.grey.withOpacity(0.1),
-                  child: ListTile(
-                    title: Text(terms[index]),
-                    onTap: () {
-                      setState(() {
-                        selectedTerm = terms[index];
-                        checkMatch();
-                      });
-                    },
-                  ),
-                );
-              },
+          // Timer display
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Center(
+              child: ValueListenableBuilder<int>(
+                valueListenable: _secondsElapsed,
+                builder: (context, seconds, child) {
+                  final minutes = seconds ~/ 60;
+                  final remainingSeconds = seconds % 60;
+                  return Text(
+                    'Time: ${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: seconds > timeLimit 
+                          ? Colors.red 
+                          : AppUi.offWhite,
+                    ),
+                  );
+                },
+              ),
             ),
           ),
-          // Definitions Column
+          // Existing game content
           Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: definitions.length,
-              itemBuilder: (context, index) {
-                if (defMatched[index]) return const SizedBox.shrink();
-                return Card(
-                  color: selectedDef == definitions[index]
-                      ? AppUi.primary.withOpacity(0.3)
-                      : AppUi.grey.withOpacity(0.1),
-                  child: ListTile(
-                    title: Text(definitions[index]),
-                    onTap: () {
-                      setState(() {
-                        selectedDef = definitions[index];
-                        checkMatch();
-                      });
+            child: Row(
+              children: [
+                // Terms Column
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: terms.length,
+                    itemBuilder: (context, index) {
+                      if (termMatched[index]) return const SizedBox.shrink();
+                      return Card(
+                        color: selectedTerm == terms[index] 
+                            ? AppUi.primary.withOpacity(0.3)
+                            : AppUi.grey.withOpacity(0.1),
+                        child: ListTile(
+                          title: Text(terms[index]),
+                          onTap: () {
+                            setState(() {
+                              selectedTerm = terms[index];
+                              checkMatch();
+                            });
+                          },
+                        ),
+                      );
                     },
                   ),
-                );
-              },
+                ),
+                // Definitions Column
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: definitions.length,
+                    itemBuilder: (context, index) {
+                      if (defMatched[index]) return const SizedBox.shrink();
+                      return Card(
+                        color: selectedDef == definitions[index]
+                            ? AppUi.primary.withOpacity(0.3)
+                            : AppUi.grey.withOpacity(0.1),
+                        child: ListTile(
+                          title: Text(definitions[index]),
+                          onTap: () {
+                            setState(() {
+                              selectedDef = definitions[index];
+                              checkMatch();
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],

@@ -1,5 +1,5 @@
 import 'package:fbla_2025/Services/Firebase/firestore/Auth/Auth.dart';
-import 'package:fbla_2025/components/authButton.dart';
+import 'package:fbla_2025/components/Auth/authButton.dart';
 import 'package:fbla_2025/pages/auth/Register.dart';
 import 'package:fbla_2025/pages/auth/logIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../Services/Firebase/firestore/classes.dart';
 import '../../app_ui.dart';
-import '../../components/button.dart';
+import '../../components/Buttons/button.dart';
 
 class Signup extends StatelessWidget {
   Signup({super.key});

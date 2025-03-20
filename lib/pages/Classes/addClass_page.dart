@@ -1,5 +1,5 @@
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
-import 'package:fbla_2025/components/animatedGradientBox.dart';
+import 'package:fbla_2025/components/Buttons/animatedGradientBox.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,8 +16,8 @@ class AddclassPage extends StatefulWidget {
 }
 
 class _AddclassPageState extends State<AddclassPage> {
-  final TextEditingController _className = new TextEditingController();
-  final TextEditingController _description = new TextEditingController();
+  final TextEditingController _className = TextEditingController();
+  final TextEditingController _description = TextEditingController();
 
   String customId = DateTime.now().millisecondsSinceEpoch.toString();
   //final TextEditingController _creator = new TextEditingController();
@@ -98,25 +98,50 @@ class _AddclassPageState extends State<AddclassPage> {
                 const SizedBox(
                   height: 30,
                 ),
-        GestureDetector(
-          child: Container(
-            height: 30,
-            width: 50,
-            color: AppUi.grey,
+        Padding(
+          padding: const EdgeInsets.only(left: 12.0),
+          child: GestureDetector(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppUi.offWhite.withValues(alpha: .2),
+              ),
+              height: 30,
+              width: 150,
+              child: Center(
+                child: Text(
+                  'Add Class',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+              ),
+            ),
+            onTap: () async {  // Make this async
+              try {
+                ClassData clas = ClassData();
+                UserData? user = context.read<UserProvider>().currentUser;
+                clas.creator = "${user.firstName} ${user.lastName}";
+                clas.description = _description.text;
+                clas.dateMade = DateTime.now();
+                clas.name = _className.text;
+                clas.id = customId;
+          
+                // Wait for Firebase operation to complete
+                await Firestore.addClass(clas);
+                
+                // Update provider and wait for completion
+                context.read<UserProvider>().addClass(clas);
+          
+                // Return success to trigger homepage refresh
+                Navigator.pop(context, true);
+                
+              } catch (e) {
+                // Handle any errors
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error adding class: $e')),
+                );
+              }
+            },
           ),
-          onTap: () {
-            ClassData clas = ClassData();
-            UserData? user = context.read<UserProvider>().currentUser;
-            clas.creator = user.id;
-            clas.description = _description.text;
-            clas.dateMade = DateTime.now();
-            clas.name = _className.text;
-            clas.id = customId;
-
-            Firestore.addClass(clas);
-
-            Navigator.pop(context);
-          },
         )
       ]),
     );

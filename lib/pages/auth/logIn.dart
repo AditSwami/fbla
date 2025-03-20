@@ -1,7 +1,7 @@
 import 'package:fbla_2025/Services/Firebase/firestore/Auth/Auth.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
-import 'package:fbla_2025/components/authButton.dart';
-import 'package:fbla_2025/components/button.dart';
+import 'package:fbla_2025/components/Auth/authButton.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:fbla_2025/pages/Classes/homepage.dart';
 import 'package:flutter/cupertino.dart';

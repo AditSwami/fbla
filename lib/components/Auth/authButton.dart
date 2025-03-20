@@ -2,7 +2,7 @@ import 'package:fbla_2025/Services/Firebase/firestore/Auth/Auth.dart';
 import 'package:fbla_2025/pages/Classes/homepage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../app_ui.dart';
+import '../../app_ui.dart';
 
 class AuthButton extends StatelessWidget {
   const AuthButton({

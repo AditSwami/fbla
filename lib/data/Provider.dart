@@ -2,17 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:share_plus/share_plus.dart';
 
 class UserProvider with ChangeNotifier {
   UserData _currentUser = UserData();
   bool _isAuth = false;
   List<ClassData> _classes = [];
   final List<UserData> _users = [];
+  List<PostData> _posts = [];
+  List<PostData> _userPosts = [];
 
   UserData get currentUser => _currentUser;
   bool get isAuth => _isAuth;
   List<ClassData> get classes => _classes;
   List<UserData> get users => _users;
+  List<PostData> get posts => _posts;
+  List<PostData> get userPosts => _userPosts;
 
   void setCurentUser(UserData user) {
     _currentUser = user;
@@ -77,15 +82,46 @@ class UserProvider with ChangeNotifier {
   Future<void> loadJoinedClasses(BuildContext context) async {
     final joinedClasses = await Firestore.getUserClasses(context);
     if (joinedClasses != null) {
-      print('Loaded joined classes: ${joinedClasses.map((c) => c.id).toList()}');
       _currentUser.classes = joinedClasses.map((c) => c).toList();
       notifyListeners();
     }
   }
 
   bool isClassMember(String classId) {
-    print('Checking membership for ID: $classId');
-    print('Current classes: ${_currentUser.classes.map((c) => c?.id).toList()}');
     return _currentUser.classes.any((clas) => clas?.id == classId);
+  }
+
+  void removeClass(ClassData clas) async{
+      await Firestore.deleteClass(clas.id);
+      _classes.removeWhere((c) => c.id == clas.id);
+      notifyListeners();
+  }
+
+  Future<List<PostData>> loadPosts(BuildContext context) async{
+    _posts = await Firestore.getFeedPosts(context);
+    _userPosts = await Firestore.getUserPosts(currentUser);
+    for(var post in _userPosts){
+      _posts.add(post);
+    }
+    return _posts;
+  }
+
+  List<PostData> getPosts(){
+    return posts;
+  }
+
+  Future<List<PostData>> loadUserPosts(BuildContext context) async{
+    _userPosts = await Firestore.getUserPosts(currentUser);
+    return _posts;
+  }
+
+  List<PostData> getUserPosts(){
+    return userPosts;
+  }
+
+  void addPost(PostData post, List<XFile> images) async {
+    await Firestore.makePost(post, images, currentUser);
+    _posts.add(post);
+    notifyListeners();
   }
 }

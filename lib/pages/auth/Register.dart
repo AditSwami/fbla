@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../app_ui.dart';
-import '../../components/button.dart';
+import '../../components/Buttons/button.dart';
 
 class Register extends StatelessWidget {
   Register({super.key, required email});

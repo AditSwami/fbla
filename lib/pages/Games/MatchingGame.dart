@@ -151,30 +151,20 @@ class _MatchingGameState extends State<MatchingGame> {
               borderRadius: BorderRadius.circular(8),
               color: AppUi.primary
             ),
-            child: TextButton(
-              onPressed: () {
-                // Replace OK button in dialog
-                Button(
-                  height: 40,
-                  width: 80,
-                  color: AppUi.primary,
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context, 
-                      CupertinoPageRoute(builder: (context) => Unitpage(unit: widget.unit, clas: widget.clas)));
-                  },
-                  child: Text('OK',
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: AppUi.backgroundDark
-                    ),
-                  ),
-                );
+            child: Button(
+              height: 40,
+              width: 80,
+              color: AppUi.primary,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => Unitpage(unit: widget.unit, clas: widget.clas)));
               },
               child: Text('OK',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: AppUi.backgroundDark
+                    color: AppUi.backgroundDark
                 ),
               ),
             ),

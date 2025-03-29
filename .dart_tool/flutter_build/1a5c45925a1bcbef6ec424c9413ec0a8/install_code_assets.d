@@ -1,0 +1,1 @@
+ C:\\Users\\bread\\StudioProjects\\fbla\\.dart_tool\\flutter_build\\1a5c45925a1bcbef6ec424c9413ec0a8\\native_assets.json: 

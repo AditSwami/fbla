@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
 import 'package:fbla_2025/components/ChatPage/post_component.dart';
 import 'package:provider/provider.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 
 class Chatpage extends StatefulWidget {
   const Chatpage({super.key});
@@ -16,7 +17,6 @@ class Chatpage extends StatefulWidget {
 
 class _ChatpageState extends State<Chatpage> {
   final ScrollController _scrollController = ScrollController();
-  String _selectedClass = 'General';
 
   @override
   void initState() {
@@ -51,25 +51,56 @@ class _ChatpageState extends State<Chatpage> {
                     children: [
                       const SizedBox(height: 70),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          "Study Groups",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ClassGroupChip(
-                              name: "General",
-                              isSelected: _selectedClass == "General",
-                              onTap: () => setState(() => _selectedClass = "General"),
+                            Text(
+                              "Study Groups",
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            Button(
+                              height: 35,
+                              width: 125,
+                              color: AppUi.primary,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(builder: (context) => const AddChatPage()),
+                                );
+                              },
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Create Post',
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Icon(Icons.add, color: AppUi.offWhite, size: 20)
+                                  ],
+                                ),
+                              ),
                             ),
                           ],
                         ),
+                      ),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: SizedBox(
+                          width: 365,
+                          child: CupertinoSearchTextField(
+                            backgroundColor: AppUi.grey.withValues(alpha: .1),
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            onChanged: (value) => {},
+                            onSubmitted: (value) {},
+                            placeholder: 'Search',
+                          ),
+                        ), 
                       ),
                     ],
                   ),
@@ -124,31 +155,6 @@ class _ChatpageState extends State<Chatpage> {
                       ),
               ),
             ],
-          ),
-          Positioned(
-            bottom: 25,
-            right: 16,
-            child: FloatingActionButton.extended(
-              backgroundColor: AppUi.primary,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute(builder: (context) => AddChatPage()),
-                );
-              },
-              label: Row(
-                children: [
-                  const Icon(Icons.add_rounded),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Create Post',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppUi.backgroundDark,
-                        ),
-                  ),
-                ],
-              ),
-            ),
           ),
         ],
       ),

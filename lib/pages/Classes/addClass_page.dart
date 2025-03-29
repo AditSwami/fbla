@@ -1,5 +1,6 @@
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/components/Buttons/animatedGradientBox.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,24 +99,14 @@ class _AddclassPageState extends State<AddclassPage> {
                 const SizedBox(
                   height: 30,
                 ),
+        // Replace the Add Class button
         Padding(
           padding: const EdgeInsets.only(left: 12.0),
-          child: GestureDetector(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: AppUi.offWhite.withValues(alpha: .2),
-              ),
-              height: 30,
-              width: 150,
-              child: Center(
-                child: Text(
-                  'Add Class',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ),
-            ),
-            onTap: () async {  // Make this async
+          child: Button(
+            height: 30,
+            width: 150,
+            color: AppUi.offWhite.withValues(alpha: .2),
+            onTap: () async {
               try {
                 ClassData clas = ClassData();
                 UserData? user = context.read<UserProvider>().currentUser;
@@ -124,23 +115,22 @@ class _AddclassPageState extends State<AddclassPage> {
                 clas.dateMade = DateTime.now();
                 clas.name = _className.text;
                 clas.id = customId;
-          
-                // Wait for Firebase operation to complete
+        
                 await Firestore.addClass(clas);
-                
-                // Update provider and wait for completion
                 context.read<UserProvider>().addClass(clas);
-          
-                // Return success to trigger homepage refresh
                 Navigator.pop(context, true);
-                
               } catch (e) {
-                // Handle any errors
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Error adding class: $e')),
                 );
               }
             },
+            child: Center(
+              child: Text(
+                'Add Class',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
           ),
         )
       ]),

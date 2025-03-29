@@ -2,6 +2,7 @@ import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/Services/progress_service.dart';
 import 'package:fbla_2025/app_ui.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/components/terms/TermsBox.dart';
 import 'package:fbla_2025/pages/Games/CrosswordGame.dart';
 import 'package:fbla_2025/pages/Games/MatchingGame.dart';
@@ -108,17 +109,16 @@ class _UnitpageState extends State<Unitpage> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: GestureDetector(
-              child: Icon(
-                Icons.add,
-                color: AppUi.offWhite,
-                size: 35,
-              ),
-              onTap: () => Navigator.push(
-                context,
-                CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
-                ),
-            ),
+            child: Button(
+                    height: 35,
+                    width: 35,
+                    color: AppUi.primary,
+                    onTap: () => Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
+                      ),
+                    child: Icon(Icons.add, color: AppUi.offWhite, size: 28),
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -213,7 +213,8 @@ class _UnitpageState extends State<Unitpage> {
                           Icons.grid_view_rounded,
                           () => _navigateToGame(MatchingGame(
                             terms: termsAndDefs,
-                            unit: widget.unit,  // Add unit here
+                            unit: widget.unit,
+                            clas: widget.clas,  // Add unit here
                           )),
                         ),
                         _gameButton(
@@ -359,7 +360,7 @@ class _UnitpageState extends State<Unitpage> {
             ),
             child: Icon(
               icon,
-              color: AppUi.primary,
+              color: AppUi.offWhite,
               size: 32,
             ),
           ),

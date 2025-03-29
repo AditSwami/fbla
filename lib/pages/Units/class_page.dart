@@ -3,6 +3,7 @@ import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/components/Boxes/Unit_box.dart';
 import 'package:fbla_2025/app_ui.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:fbla_2025/pages/Units/AddUnitPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,46 +77,49 @@ class _ClassPageState extends State<ClassPage> {
       );
     }
 
-    if(_isCreator){
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: AppUi.grey.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: const Text('Creator',)
-      );
-    }
-
-    if (_isMember) {
-      return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: AppUi.grey.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Text(
-          'Joined',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Colors.grey,
+    if (_isCreator) {
+      return Button(
+        height: 35,
+        width: 100,
+        color: AppUi.grey,
+        child: Center(
+          child: Text(
+            'Creator',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppUi.offWhite,
+            ),
           ),
         ),
       );
     }
 
-    return TextButton(
-      onPressed: _joinClass,
-      style: TextButton.styleFrom(
-        backgroundColor: AppUi.primary,
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+    if (_isMember) {
+      return Button(
+        height: 35,
+        width: 100,
+        color: AppUi.grey,
+        child: Center(
+          child: Text(
+            'Joined',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppUi.offWhite,
+            ),
+          ),
         ),
-      ),
-      child: Text(
-        'Join',
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: Colors.white,
+      );
+    }
+
+    return Button(
+      height: 35,
+      width: 100,
+      color: AppUi.primary,
+      onTap: _joinClass,
+      child: Center(
+        child: Text(
+          'Join',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: AppUi.offWhite,
+          ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/Services/Gemini.dart';
 import 'package:fbla_2025/app_ui.dart';
 import 'package:fbla_2025/components/Buttons/animatedGradientBox.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -101,36 +102,30 @@ class _AddunitpageState extends State<Addunitpage> {
             const SizedBox(
               height: 30,
             ),
+            // Replace the Add Class button
             Padding(
               padding: const EdgeInsets.only(left: 12.0),
-              child: GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: AppUi.offWhite.withValues(alpha: .2),
-                  ),
-                  height: 30,
-                  width: 150,
-                  child: Center(
-                    child: Text(
-                      'Add Class',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ),
-                ),
+              child: Button(
+                height: 30,
+                width: 150,
+                color: AppUi.offWhite.withValues(alpha: .2),
                 onTap: () async {
                   UnitData unit = UnitData();
-                  // ignore: unused_local_variable
-                  UserData? user = context.read<UserProvider>().currentUser;
                   unit.description = _unitDescription.text;
                   unit.name = _unitName.text;
                   unit.id = customId;
                   unit.testScore = 0;
-              
+                  
                   await Firestore.addUnit(unit, widget.clas);
-              
+                  
                   Navigator.pop(context);
                 },
+                child: Center(
+                  child: Text(
+                    'Add Class',
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ),
               ),
             )
           ]),

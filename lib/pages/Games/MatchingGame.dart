@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/progress_service.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
+import 'package:fbla_2025/pages/TermsAndDefs/UnitPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
 
@@ -10,10 +13,12 @@ class MatchingGame extends StatefulWidget {
     super.key, 
     required this.terms,
     required this.unit,  // Add this
+    required this.clas,  // Add this
   });
 
   final Map<String, dynamic> terms;
-  final UnitData unit;  // Add this
+  final UnitData unit; // Add this
+  final ClassData clas;
 
   @override
   State<MatchingGame> createState() => _MatchingGameState();
@@ -148,8 +153,24 @@ class _MatchingGameState extends State<MatchingGame> {
             ),
             child: TextButton(
               onPressed: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
+                // Replace OK button in dialog
+                Button(
+                  height: 40,
+                  width: 80,
+                  color: AppUi.primary,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context, 
+                      CupertinoPageRoute(builder: (context) => Unitpage(unit: widget.unit, clas: widget.clas)));
+                  },
+                  child: Text('OK',
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: AppUi.backgroundDark
+                    ),
+                  ),
+                );
               },
               child: Text('OK',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(

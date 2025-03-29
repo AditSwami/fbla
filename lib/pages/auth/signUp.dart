@@ -89,8 +89,7 @@ class Signup extends StatelessWidget {
                   Text('Sign up',
                       style: Theme.of(context)
                           .textTheme
-                          .labelLarge
-                          ?.copyWith(color: AppUi.backgroundDark)),
+                          .labelLarge),
                 ],
               ),
               onTap: () async {

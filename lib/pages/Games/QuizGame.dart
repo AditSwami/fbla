@@ -1,5 +1,6 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/pages/TermsAndDefs/UnitPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +92,7 @@ class _QuizGameState extends State<QuizGame> {
 
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: AppUi.backgroundDark,
         title: Text('Quiz Complete!'),
@@ -102,9 +104,29 @@ class _QuizGameState extends State<QuizGame> {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+          Button(
+            height: 40,
+            width: 80,
+            color: AppUi.primary,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => Unitpage(
+                    unit: widget.unit,
+                    clas: widget.clas,
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              'OK',
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: AppUi.backgroundDark
+              ),
+            ),
           ),
         ],
       ),
@@ -152,63 +174,65 @@ class _QuizGameState extends State<QuizGame> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
+            // Replace question bank buttons
             ...questions[currentQuestion]['options'].map<Widget>((option) {
-              final bool isCorrectAnswer = option == questions[currentQuestion]['correct'];
-              final bool isSelectedAnswer = option == selected;
-              
-              Color? backgroundColor = AppUi.grey.withOpacity(0.1);
-              if (showAnswer) {
-                if (isCorrectAnswer) {
-                  backgroundColor = Colors.green.withOpacity(0.7);
-                } else if (isSelectedAnswer && !isCorrectAnswer) {
-                  backgroundColor = Colors.red.withOpacity(0.7);
-                }
-              }
-              
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: backgroundColor,
-                      padding: const EdgeInsets.all(16),
-                    ),
-                    onPressed: () => _checkAnswer(option),
-                    child: Text(
-                      option.toString(),
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              );
+            final bool isCorrectAnswer = option == questions[currentQuestion]['correct'];
+            final bool isSelectedAnswer = option == selected;
+            
+            Color? backgroundColor = AppUi.grey.withOpacity(0.1);
+            if (showAnswer) {
+            if (isCorrectAnswer) {
+            backgroundColor = Colors.green.withOpacity(0.7);
+            } else if (isSelectedAnswer && !isCorrectAnswer) {
+            backgroundColor = Colors.red.withOpacity(0.7);
+            }
+            }
+            
+            return Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Button(
+            color: backgroundColor,
+            onTap: () => _checkAnswer(option),
+            child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+            option.toString(),
+            style: Theme.of(context).textTheme.bodyLarge,
+            textAlign: TextAlign.center,
+            ),
+            ),
+            ),
+            );
             }).toList(),
-            // In QuizGame.dart, modify the Finish Quiz button:
+            
+            // Replace Finish Quiz button
             if (currentQuestion == questions.length - 1 && showAnswer)
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppUi.primary,
-                  padding: const EdgeInsets.all(16),
-                ),
-                onPressed: () async {
-                  await _onQuizComplete(score);
-                  Navigator.pop(context, score);
-                  Navigator.pushAndRemoveUntil(
-                    context, 
-                    CupertinoPageRoute(
-                      builder: (context) => Unitpage(
-                        unit: widget.unit,
-                        clas: widget.clas,
-                      ),
-                    ), 
-                    (route) => route.isFirst); // Pass score back to UnitPage
-                },
-                child: Text(
-                  'Finish Quiz',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppUi.backgroundDark),
-                ),
-              ),
+            Button(
+            color: AppUi.primary,
+            onTap: () async {
+            await _onQuizComplete(score);
+            Navigator.pop(context, score);
+            Navigator.pushAndRemoveUntil(
+            context, 
+            CupertinoPageRoute(
+            builder: (context) => Unitpage(
+            unit: widget.unit,
+            clas: widget.clas,
+            ),
+            ), 
+            (route) => route.isFirst
+            );
+            },
+            child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+            'Finish Quiz',
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+            color: AppUi.backgroundDark
+            ),
+            ),
+            ),
+            ),
           ],
         ),
       ),

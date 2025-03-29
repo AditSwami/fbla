@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
 
-// First add 'image: ^4.1.3' to pubspec.yaml under dependencies
 import 'package:image/image.dart' as img;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
@@ -291,16 +290,11 @@ class Firestore {
   }
 
   static Future<void> addTerm( Map<String, dynamic> term, UnitData unit, ClassData clas) async {
-    // Use the field path to store the map correctly
   final docRef = db.collection('classes').doc(clas.id);
   final docSnap = await docRef.get();
-
   final data = docSnap.data();
-
   Map<String, dynamic> existingTerms = data!['units'][unit.id]!['terms'];
-
   existingTerms.addAll(term);
-
     await db.collection('classes').doc(clas.id).update({
       'units.${unit.id}.terms': existingTerms
     });

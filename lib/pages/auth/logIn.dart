@@ -4,7 +4,9 @@ import 'package:fbla_2025/components/Auth/authButton.dart';
 import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/data/Provider.dart';
 import 'package:fbla_2025/pages/Classes/homepage.dart';
+import 'package:fbla_2025/pages/auth/signUp.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -82,8 +84,7 @@ class Login extends StatelessWidget {
                   Text('Log in',
                       style: Theme.of(context)
                           .textTheme
-                          .labelLarge
-                          ?.copyWith(color: AppUi.backgroundDark)),
+                          .labelLarge),
                 ],
               ),
               onTap: () async {
@@ -143,7 +144,28 @@ class Login extends StatelessWidget {
               ),
               child: AuthButton(auth: 'apple'),
             ),
-            const AuthButton(auth: 'facebook')
+            const AuthButton(auth: 'facebook'),
+            const SizedBox(
+              height: 30,
+            ),
+            RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                  text: 'Don\'t have an account? ',
+                  style: Theme.of(context).textTheme.bodyMedium),
+              TextSpan(
+                  text: 'Sign up',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(decoration: TextDecoration.underline),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      Navigator.pushReplacement(context,
+                        CupertinoPageRoute(builder: (context) => Signup())
+                      );
+                    })
+            ]))
           ],
         ),
       ),

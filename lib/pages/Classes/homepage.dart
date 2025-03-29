@@ -1,6 +1,7 @@
 import 'package:cupertino_refresh/cupertino_refresh.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/pages/Classes/addClass_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -65,114 +66,153 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppUi.backgroundDark,
       appBar: AppBar(
+        elevation: 12,
         forceMaterialTransparency: true,
         automaticallyImplyLeading: false,
-        toolbarHeight: 112,
+        toolbarHeight: 130,
         backgroundColor: AppUi.backgroundDark,
         flexibleSpace: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 70,
-            ),
+            const SizedBox(height: 70),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0),
-              child: Text(
-                'My Classes',
-                style: Theme.of(context).textTheme.titleLarge,
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'My Classes',
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  Button(
+                    height: 35,
+                    width: 35,
+                    color: AppUi.primary,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(builder: (context) => const AddclassPage())
+                      );
+                    },
+                    child: Icon(Icons.add, color: AppUi.offWhite, size: 28),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: SizedBox(
-                width: 365,
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: AppUi.grey.withOpacity(0.1),
+                ),
                 child: CupertinoSearchTextField(
-                  backgroundColor: AppUi.grey.withAlpha(26),
+                  backgroundColor: Colors.transparent,
                   style: Theme.of(context).textTheme.bodyMedium,
                   onChanged: _filterClasses,
                   controller: _searchController,
-                  placeholder: 'Search',
+                  placeholder: 'Search classes...',
+                  placeholderStyle: TextStyle(color: AppUi.grey.withOpacity(0.7)),
+                  prefixIcon: Icon(CupertinoIcons.search, color: AppUi.grey.withOpacity(0.7)),
                 ),
               ),
             ),
           ],
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 45.0, right: 15.0),
-            child: GestureDetector(
-              child: Icon(
-                Icons.add,
-                color: AppUi.offWhite,
-                size: 35,
-              ),
-              onTap: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => const AddclassPage()));
-              },
-            ),
-          )
-        ],
-        centerTitle: false,
       ),
       body: CupertinoRefresh(
-        physics: const AlwaysScrollableScrollPhysics(),
-        delayDuration: const Duration(seconds: 1),
-        child: SingleChildScrollView(  // Add this wrapper
+        physics: const BouncingScrollPhysics(),
+        delayDuration: const Duration(milliseconds: 800),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 15),
+              //const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Text(
-                  'Created Classes',
-                  style: Theme.of(context).textTheme.titleMedium
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                      child: Text(
+                        'Created Classes',
+                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: AppUi.offWhite,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Column(
-                children: _filteredClasses
-                    .map((clas) => Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ClassBox(clas: clas),
-                        ))
-                    .toList(),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: Column(
+                  children: _filteredClasses
+                      .map((clas) => Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, 
+                              vertical: 8.0
+                            ),
+                            child: ClassBox(clas: clas),
+                          ))
+                      .toList(),
+                ),
               ),
               const SizedBox(height: 30),
               Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Text(
-                  'Joined Classes',
-                  style: Theme.of(context).textTheme.titleMedium
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                      child: Text(
+                        'Joined Classes',
+                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: AppUi.offWhite,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Column(
-                children: _joinedClasses
-                    .map((clas) => Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ClassBox(clas: clas),
-                        ))
-                    .toList(),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: Column(
+                  children: _joinedClasses
+                      .map((clas) => Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, 
+                              vertical: 8.0
+                            ),
+                            child: ClassBox(clas: clas),
+                          ))
+                      .toList(),
+                ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
         onRefresh: () async {
-          await Firestore.getUserCreatedClasses(context).then((clas) {
-            setState(() {
-              _createdClasses = clas ?? [];
-              _filteredClasses = _createdClasses;
-            });
-          });
-          await Firestore.getUserClasses(context).then((clas) {
-            setState(() {
-              _joinedClasses = clas ?? [];
-            });
-          });
+          await Future.wait([
+            Firestore.getUserCreatedClasses(context).then((clas) {
+              setState(() {
+                _createdClasses = clas ?? [];
+                _filteredClasses = _createdClasses;
+              });
+            }),
+            Firestore.getUserClasses(context).then((clas) {
+              setState(() {
+                _joinedClasses = clas ?? [];
+              });
+            }),
+          ]);
         },
       ),
     );

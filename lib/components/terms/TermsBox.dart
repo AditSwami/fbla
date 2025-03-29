@@ -77,15 +77,34 @@ class _TermsboxState extends State<Termsbox> with SingleTickerProviderStateMixin
       height: 220,
       width: 320,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppUi.grey.withValues(alpha: .3)
+        borderRadius: BorderRadius.circular(15),
+        color: AppUi.grey.withOpacity(0.15),
+        border: Border.all(
+          color: AppUi.grey.withValues(alpha: .3),
+          width: 2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppUi.grey.withOpacity(0.2),
+            blurRadius: 15,
+            spreadRadius: 1,
+          ),
+        ],
       ),
       child: Center(
-        // Apply counter-rotation to the text when on back side
         child: Transform(
           alignment: Alignment.center,
           transform: Matrix4.identity()..rotateY(isBack ? math.pi : 0),
-          child: Text(text),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: AppUi.offWhite,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
       ),
     );

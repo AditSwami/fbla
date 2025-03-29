@@ -8,15 +8,15 @@ import 'package:fbla_2025/app_ui.dart';
 
 class QuizGame extends StatefulWidget {
   const QuizGame({
-    super.key, 
+    super.key,
     required this.terms,
-    required this.unit,   // Add unit parameter
-    required this.clas,   // Add class parameter
+    required this.unit, // Add unit parameter
+    required this.clas, // Add class parameter
   });
 
   final Map<String, dynamic> terms;
-  final UnitData unit;    // Add unit field
-  final ClassData clas;   // Add class field
+  final UnitData unit; // Add unit field
+  final ClassData clas; // Add class field
 
   @override
   State<QuizGame> createState() => _QuizGameState();
@@ -28,26 +28,30 @@ class _QuizGameState extends State<QuizGame> {
   int score = 0;
   bool? isCorrect;
   bool showAnswer = false;
-  Object? selected;  // Change to Object? which can properly handle null
-  
+  Object? selected; // Change to Object? which can properly handle null
+
   void _checkAnswer(String selected) {
     if (showAnswer) return;
 
     setState(() {
       showAnswer = true;
-      this.selected = selected;  // Store the selected answer
+      this.selected = selected;
       isCorrect = selected == questions[currentQuestion]['correct'];
       if (isCorrect!) score += 10;
     });
 
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted && currentQuestion < questions.length - 1) {
-        setState(() {
-          currentQuestion++;
-          showAnswer = false;
-          isCorrect = null;
-          selected = "";  // This should now work properly
-        });
+    Future.delayed(const Duration(seconds: 1), () {
+      if (mounted) {
+        if (currentQuestion < questions.length - 1) {
+          setState(() {
+            currentQuestion++;
+            showAnswer = false;
+            isCorrect = null;
+            selected = "";
+          });
+        } else {
+          _onQuizComplete(score);
+        }
       }
     });
   }
@@ -61,12 +65,12 @@ class _QuizGameState extends State<QuizGame> {
   List<Map<String, dynamic>> _generateQuestions() {
     final terms = widget.terms.entries.toList();
     terms.shuffle();
-    
+
     return List.generate(terms.length, (index) {
       final correct = terms[index];
       final otherTerms = List.of(terms)..remove(correct);
       otherTerms.shuffle();
-      
+
       final options = [
         correct.value,
         ...otherTerms.take(3).map((e) => e.value),
@@ -95,12 +99,21 @@ class _QuizGameState extends State<QuizGame> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: AppUi.backgroundDark,
-        title: Text('Quiz Complete!'),
+        title: Text('Congratulations!', 
+          style: Theme.of(context).textTheme.titleLarge),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Your Score: $score%'),
-            Text('New Average Score: $newAverage%'),
+            Text('Quiz Complete!',
+              style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 16),
+            Text('Your Score: $score%',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: AppUi.primary,
+              )),
+            const SizedBox(height: 8),
+            Text('New Average: $newAverage%',
+              style: Theme.of(context).textTheme.titleMedium),
           ],
         ),
         actions: [
@@ -111,7 +124,7 @@ class _QuizGameState extends State<QuizGame> {
             onTap: () {
               Navigator.pop(context);
               Navigator.pop(context);
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
                 CupertinoPageRoute(
                   builder: (context) => Unitpage(
@@ -119,12 +132,15 @@ class _QuizGameState extends State<QuizGame> {
                     clas: widget.clas,
                   ),
                 ),
+                (route) => route.isFirst,
               );
             },
-            child: Text(
-              'OK',
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: AppUi.backgroundDark
+            child: Center(
+              child: Text(
+                'OK',
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: AppUi.offWhite,
+                ),
               ),
             ),
           ),
@@ -139,17 +155,6 @@ class _QuizGameState extends State<QuizGame> {
       appBar: AppBar(
         backgroundColor: AppUi.backgroundDark,
         title: Text('Quiz', style: Theme.of(context).textTheme.titleLarge),
-        actions: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Text(
-                'Score: $score',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -164,75 +169,56 @@ class _QuizGameState extends State<QuizGame> {
             const SizedBox(height: 32),
             Text(
               'What is the definition of:',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppUi.offWhite,
+                  ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
             Text(
               questions[currentQuestion]['term'].toString(),
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: AppUi.offWhite,
+                    fontWeight: FontWeight.bold,
+                  ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-            // Replace question bank buttons
             ...questions[currentQuestion]['options'].map<Widget>((option) {
-            final bool isCorrectAnswer = option == questions[currentQuestion]['correct'];
-            final bool isSelectedAnswer = option == selected;
-            
-            Color? backgroundColor = AppUi.grey.withOpacity(0.1);
-            if (showAnswer) {
-            if (isCorrectAnswer) {
-            backgroundColor = Colors.green.withOpacity(0.7);
-            } else if (isSelectedAnswer && !isCorrectAnswer) {
-            backgroundColor = Colors.red.withOpacity(0.7);
-            }
-            }
-            
-            return Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: Button(
-            color: backgroundColor,
-            onTap: () => _checkAnswer(option),
-            child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-            option.toString(),
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-            ),
-            ),
-            ),
-            );
+              final bool isCorrectAnswer =
+                  option == questions[currentQuestion]['correct'];
+              final bool isSelectedAnswer = option == selected;
+
+              Color? backgroundColor = AppUi.grey.withOpacity(0.1);
+              if (showAnswer) {
+                if (isCorrectAnswer) {
+                  backgroundColor = Colors.green.withOpacity(0.7);
+                } else if (isSelectedAnswer && !isCorrectAnswer) {
+                  backgroundColor = Colors.red.withOpacity(0.7);
+                }
+              }
+
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Button(
+                  color: backgroundColor,
+                  onTap: () => _checkAnswer(option),
+                  child: SizedBox(
+                    height: 60,
+                    child: Center(
+                      child: Text(
+                        option.toString(),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: AppUi.offWhite,
+                            ),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
+                  ),
+                ),
+              );
             }).toList(),
-            
-            // Replace Finish Quiz button
-            if (currentQuestion == questions.length - 1 && showAnswer)
-            Button(
-            color: AppUi.primary,
-            onTap: () async {
-            await _onQuizComplete(score);
-            Navigator.pop(context, score);
-            Navigator.pushAndRemoveUntil(
-            context, 
-            CupertinoPageRoute(
-            builder: (context) => Unitpage(
-            unit: widget.unit,
-            clas: widget.clas,
-            ),
-            ), 
-            (route) => route.isFirst
-            );
-            },
-            child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-            'Finish Quiz',
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-            color: AppUi.backgroundDark
-            ),
-            ),
-            ),
-            ),
           ],
         ),
       ),

@@ -146,23 +146,17 @@ class _MatchingGameState extends State<MatchingGame> {
           ],
         ),
         actions: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: AppUi.primary
-            ),
-            child: Button(
-              height: 40,
-              width: 80,
-              color: AppUi.primary,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(builder: (context) => Unitpage(unit: widget.unit, clas: widget.clas)));
-              },
-              child: Text('OK',
+          Button(
+            height: 40,
+            width: 80,
+            color: AppUi.primary,
+            onTap: () {
+              Navigator.pop(context); // Close dialog
+              Navigator.pop(context); // Return to UnitPage
+            },
+            child: Center(
+              child: Text(
+                'OK',
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     color: AppUi.backgroundDark
                 ),
@@ -201,74 +195,146 @@ class _MatchingGameState extends State<MatchingGame> {
       ),
       body: Column(
         children: [
-          // Timer display
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            decoration: BoxDecoration(
+              color: AppUi.grey.withOpacity(0.1),
+              border: Border(
+                bottom: BorderSide(
+                  color: AppUi.grey.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+            ),
             child: Center(
               child: ValueListenableBuilder<int>(
                 valueListenable: _secondsElapsed,
                 builder: (context, seconds, child) {
                   final minutes = seconds ~/ 60;
                   final remainingSeconds = seconds % 60;
-                  return Text(
-                    'Time: ${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: seconds > timeLimit 
-                          ? Colors.red 
-                          : AppUi.offWhite,
+                  return Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppUi.grey.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: seconds > timeLimit 
+                            ? Colors.red.withOpacity(0.3)
+                            : AppUi.grey.withOpacity(0.2),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.timer_outlined,
+                          color: seconds > timeLimit 
+                              ? Colors.red 
+                              : AppUi.offWhite,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: seconds > timeLimit 
+                                ? Colors.red 
+                                : AppUi.offWhite,
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 },
               ),
             ),
           ),
-          // Existing game content
           Expanded(
             child: Row(
               children: [
-                // Terms Column
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: terms.length,
                     itemBuilder: (context, index) {
                       if (termMatched[index]) return const SizedBox.shrink();
-                      return Card(
-                        color: selectedTerm == terms[index] 
-                            ? AppUi.primary.withOpacity(0.3)
-                            : AppUi.grey.withOpacity(0.1),
-                        child: ListTile(
-                          title: Text(terms[index]),
-                          onTap: () {
-                            setState(() {
-                              selectedTerm = terms[index];
-                              checkMatch();
-                            });
-                          },
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: selectedTerm == terms[index] 
+                                ? AppUi.primary.withOpacity(0.15)
+                                : AppUi.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: selectedTerm == terms[index]
+                                  ? AppUi.primary.withOpacity(0.3)
+                                  : AppUi.grey.withOpacity(0.2),
+                            ),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            title: Text(
+                              terms[index],
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: selectedTerm == terms[index]
+                                    ? AppUi.primary
+                                    : AppUi.offWhite,
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                selectedTerm = terms[index];
+                                checkMatch();
+                              });
+                            },
+                          ),
                         ),
                       );
                     },
                   ),
                 ),
-                // Definitions Column
+                Container(
+                  width: 1,
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  color: AppUi.grey.withOpacity(0.2),
+                ),
                 Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: definitions.length,
                     itemBuilder: (context, index) {
                       if (defMatched[index]) return const SizedBox.shrink();
-                      return Card(
-                        color: selectedDef == definitions[index]
-                            ? AppUi.primary.withOpacity(0.3)
-                            : AppUi.grey.withOpacity(0.1),
-                        child: ListTile(
-                          title: Text(definitions[index]),
-                          onTap: () {
-                            setState(() {
-                              selectedDef = definitions[index];
-                              checkMatch();
-                            });
-                          },
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: selectedDef == definitions[index]
+                                ? AppUi.primary.withOpacity(0.15)
+                                : AppUi.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: selectedDef == definitions[index]
+                                  ? AppUi.primary.withOpacity(0.3)
+                                  : AppUi.grey.withOpacity(0.2),
+                            ),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            title: Text(
+                              definitions[index],
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: selectedDef == definitions[index]
+                                    ? AppUi.primary
+                                    : AppUi.offWhite,
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                selectedDef = definitions[index];
+                                checkMatch();
+                              });
+                            },
+                          ),
                         ),
                       );
                     },

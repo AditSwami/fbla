@@ -6,6 +6,7 @@ import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/components/terms/TermsBox.dart';
 import 'package:fbla_2025/pages/Games/CrosswordGame.dart';
 import 'package:fbla_2025/pages/Games/MatchingGame.dart';
+import 'package:fbla_2025/pages/Games/WordSearch.dart';
 import 'package:fbla_2025/pages/Games/QuizGame.dart';
 import 'package:fbla_2025/pages/TermsAndDefs/Add_Terms.dart';
 import 'package:flutter/cupertino.dart';
@@ -214,24 +215,33 @@ class _UnitpageState extends State<Unitpage> {
                           () => _navigateToGame(MatchingGame(
                             terms: termsAndDefs,
                             unit: widget.unit,
-                            clas: widget.clas,  // Add unit here
+                            clas: widget.clas,
                           )),
                         ),
                         _gameButton(
                           'Crossword',
                           Icons.edit_square,
-                          () => _navigateToGame(CrosswordGame(terms: termsAndDefs)),
+                          () => _navigateToGame(CrosswordGame(
+                            terms: termsAndDefs,
+                          )),
                         ),
                         _gameButton(
                           'Quiz',
                           Icons.quiz_rounded,
-                          () => _navigateToGame(
-                            QuizGame(
-                              terms: termsAndDefs,
-                              unit: widget.unit,
-                              clas: widget.clas,
-                              )
-                            ),
+                          () => _navigateToGame(QuizGame(
+                            terms: termsAndDefs,
+                            unit: widget.unit,
+                            clas: widget.clas,
+                          )),
+                        ),
+                        _gameButton(
+                          'Search',
+                          Icons.search_rounded,
+                          () => _navigateToGame(WordSearch(
+                            terms: termsAndDefs,
+                            unit: widget.unit,
+                            clas: widget.clas,
+                          )),
                         ),
                       ],
                     ),

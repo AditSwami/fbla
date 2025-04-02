@@ -26,7 +26,9 @@ class _ChatpageState extends State<Chatpage> {
 
   void _loadPosts() async {
     await context.read<UserProvider>().loadPosts(context);
-    setState(() {});
+    if (mounted) {  // Add this check
+      setState(() {});
+    }
   }
 
   @override
@@ -94,7 +96,14 @@ class _ChatpageState extends State<Chatpage> {
                         child: SizedBox(
                           width: 365,
                           child: CupertinoSearchTextField(
-                            backgroundColor: AppUi.grey.withValues(alpha: .1),
+                            decoration: BoxDecoration(
+                              color: AppUi.grey.withValues(alpha: .1),
+                              border: Border.all(
+                                color: AppUi.grey.withOpacity(0.2),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             style: Theme.of(context).textTheme.bodyMedium,
                             onChanged: (value) => {},
                             onSubmitted: (value) {},

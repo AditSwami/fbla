@@ -1,11 +1,9 @@
-import 'dart:ui';
-
+import 'package:flutter/cupertino.dart';  // Add this import
 import 'package:fbla_2025/pages/Chat/ChatPage.dart';
 import 'package:fbla_2025/pages/Classes/All_Classes.dart';
 import 'package:fbla_2025/pages/Settings_Page/Settings.dart';
 import 'package:fbla_2025/pages/Classes/homepage.dart';
 import 'package:flutter/material.dart';
-
 import '../app_ui.dart';
 
 class MainPage extends StatefulWidget {
@@ -37,7 +35,6 @@ class _MainPageState extends State<MainPage> {
       body: screens[selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: AppUi.backgroundDark.withValues(alpha: .6),
           border: Border(
             top: BorderSide(
               color: AppUi.grey.withOpacity(0.1),
@@ -45,25 +42,24 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
         ),
-        child: BottomNavigationBar(
-          backgroundColor: AppUi.backgroundDark.withOpacity(0.6), // More transparent
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
+        child: CupertinoTabBar(
+          backgroundColor: AppUi.backgroundDark.withOpacity(0.3),
+          activeColor: AppUi.primary,
+          inactiveColor: AppUi.grey,
           currentIndex: selectedIndex,
+          iconSize: 22, // Added smaller icon size
           onTap: updateIndex,
-          selectedItemColor: AppUi.primary,
-          unselectedItemColor: Colors.grey,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.home_outlined),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.class_),
+              icon: Icon(Icons.class_outlined),
               label: 'Classes',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: Icon(Icons.person_outline),
               label: 'Profile',
             ),
             BottomNavigationBarItem(

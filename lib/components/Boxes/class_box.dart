@@ -104,6 +104,10 @@ class _ClassBoxState extends State<ClassBox> {
         decoration: BoxDecoration(
           color: AppUi.grey.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: AppUi.grey.withOpacity(0.2),
+            width: 1.0,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -56,7 +56,14 @@ class _AllClassesState extends State<AllClasses> {
               child: SizedBox(
                 width: 365,
                 child: CupertinoSearchTextField(
-                  backgroundColor: AppUi.grey.withValues(alpha: .1),
+                  decoration: BoxDecoration(
+                  color : AppUi.grey.withValues(alpha: .1),
+                    border: Border.all(
+                      color: AppUi.grey.withOpacity(0.2),
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   style: Theme.of(context).textTheme.bodyMedium,
                   onChanged: (value) => {},
                   onSubmitted: (value) {},

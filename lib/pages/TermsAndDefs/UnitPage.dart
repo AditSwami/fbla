@@ -82,11 +82,6 @@ class _UnitpageState extends State<Unitpage> {
           const SizedBox(
             width: 90,
           ),
-          CircularProgressIndicator(
-            value: averageScore / 100,
-            backgroundColor: AppUi.grey.withOpacity(0.2),
-            valueColor: AlwaysStoppedAnimation<Color>(AppUi.primary),
-          ),
         ],
       ),
     );
@@ -111,22 +106,28 @@ class _UnitpageState extends State<Unitpage> {
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Button(
-                    height: 35,
-                    width: 35,
-                    color: AppUi.primary,
-                    onTap: () => Navigator.push(
-                      context,
-                      CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
-                      ),
-                    child: Icon(Icons.add, color: AppUi.offWhite, size: 28),
+              height: 35,
+              width: 35,
+              color: AppUi.primary,
+              onTap: () => Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
+              ),
+              child: Icon(Icons.add, color: AppUi.offWhite, size: 28),
                   ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: IconButton(
-              icon: const Icon(Icons.help_outline),
-              onPressed: () => _showStudyTips(),
-            ),
+            padding: const EdgeInsets.only(right: 10.0, left: 4),
+            child: Button(
+              height: 35,
+              width: 35,
+              color: AppUi.primary,
+              onTap: () => Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
+              ),
+              child: Icon(Icons.question_mark, color: AppUi.offWhite, size: 20),
+                  ),
           ),
         ],
       ),
@@ -255,12 +256,16 @@ class _UnitpageState extends State<Unitpage> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppUi.grey.withValues(alpha: .1),
+                      border: Border.all(
+                        color: AppUi.grey.withOpacity(0.2),
+                        width: 1,
+                      ),
                       borderRadius: BorderRadius.circular(10)
                     ),
-                    child: Column(  // Changed from Row to Column
+                    child: Column(
                       children: [
-                        _buildProgressHeader(),  // Add progress header
-                        Divider(  // Add a divider between the two sections
+                        _buildProgressHeader(),
+                        Divider(
                           color: AppUi.grey.withOpacity(0.2),
                           thickness: 1,
                           indent: 20,
@@ -366,12 +371,16 @@ class _UnitpageState extends State<Unitpage> {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: AppUi.grey.withOpacity(0.1),
+              border: Border.all(
+                color: AppUi.grey.withOpacity(0.2),
+                width: 1,
+              ),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(
               icon,
               color: AppUi.offWhite,
-              size: 32,
+              size: 24,  // Made icon smaller
             ),
           ),
           const SizedBox(height: 8),
@@ -411,41 +420,8 @@ class _UnitpageState extends State<Unitpage> {
                       ),
                   ],
                 ),
-                IconButton(
-                  icon: Icon(Icons.edit, color: AppUi.primary),
-                  onPressed: () => _updateScore(context),
-                ),
               ],
             ),
-          ),
-        ),
-      );
-    }
-    
-    void _updateScore(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          backgroundColor: AppUi.backgroundDark,
-          title: Text('Update Test Score',
-              style: Theme.of(context).textTheme.titleLarge),
-          content: TextField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              labelText: 'Score (0-100)',
-              labelStyle: TextStyle(color: AppUi.offWhite),
-            ),
-            style: TextStyle(color: AppUi.offWhite),
-            onSubmitted: (value) async {
-              final score = int.tryParse(value);
-              if (score != null && score >= 0 && score <= 100) {
-                await Firestore.updateUnitTestScore(score, widget.unit, widget.clas);
-                setState(() {
-                  widget.unit.testScore = score;
-                });
-                Navigator.pop(context);
-              }
-            },
           ),
         ),
       );

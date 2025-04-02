@@ -108,6 +108,10 @@ class _HomepageState extends State<Homepage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: AppUi.grey.withOpacity(0.1),
+                  border: Border.all(
+                    color: AppUi.grey.withOpacity(0.2),
+                    width: 1.0,
+                  ),
                 ),
                 child: CupertinoSearchTextField(
                   backgroundColor: Colors.transparent,

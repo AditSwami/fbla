@@ -152,7 +152,7 @@ class _ClassPageState extends State<ClassPage> {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 130.0),
+                    padding: const EdgeInsets.only(left: 20.0, right: 160.0),
                     child: Text(
                       widget.clas.name,
                       style: Theme.of(context).textTheme.titleLarge,
@@ -169,7 +169,14 @@ class _ClassPageState extends State<ClassPage> {
               child: SizedBox(
                 width: 365,
                 child: CupertinoSearchTextField(
-                  backgroundColor: AppUi.grey.withAlpha(26),
+                  decoration: BoxDecoration(
+                    color: AppUi.grey.withAlpha(26),
+                    border: Border.all(
+                      color: AppUi.grey.withOpacity(0.2),
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   style: Theme.of(context).textTheme.bodyMedium,
                   onChanged: (value) => {},
                   onSubmitted: (value) {},
@@ -181,30 +188,25 @@ class _ClassPageState extends State<ClassPage> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 55.0, right: 15.0),
+            padding: const EdgeInsets.only(bottom: 55.0, right: 10.0),
             child: _buildJoinButton(),
           ),
 
           if(_isCreator)
           Padding(
             padding: const EdgeInsets.only(bottom: 55.0, right: 15),
-            child: GestureDetector(
-              child: Icon(
-                Icons.add,
-                color: AppUi.offWhite,
-                size: 35,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Addunitpage(
-                      clas: widget.clas,
-                    ),
-                  ),
-                );
-              },
-            ),
+            child:  Button(
+                height: 35,
+                width: 35,
+                color: AppUi.primary,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute(builder: (context) => Addunitpage(clas: widget.clas,))
+                  );
+                },
+                child: Icon(Icons.add, color: AppUi.offWhite, size: 28),
+            )
           ),
 
         ],

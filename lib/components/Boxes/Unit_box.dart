@@ -70,7 +70,7 @@ class _ClassBoxState extends State<UnitBox> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 14.0),
+                  padding: const EdgeInsets.only(left: 17.0),
                   child: Container(
                     constraints:
                         const BoxConstraints(maxWidth: 300, maxHeight: 60),

@@ -152,7 +152,13 @@ class _MatchingGameState extends State<MatchingGame> {
             color: AppUi.primary,
             onTap: () {
               Navigator.pop(context); // Close dialog
-              Navigator.pop(context); // Return to UnitPage
+              Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => Unitpage(
+                  unit: widget.unit,
+                  clas: widget.clas,
+                ))
+              ); // Return to UnitPage
             },
             child: Center(
               child: Text(
@@ -195,59 +201,53 @@ class _MatchingGameState extends State<MatchingGame> {
       ),
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-              color: AppUi.grey.withOpacity(0.1),
-              border: Border(
-                bottom: BorderSide(
-                  color: AppUi.grey.withOpacity(0.2),
-                  width: 1,
-                ),
-              ),
-            ),
-            child: Center(
+          const SizedBox(
+            height: 20,
+          ),
+            Center(
               child: ValueListenableBuilder<int>(
                 valueListenable: _secondsElapsed,
                 builder: (context, seconds, child) {
                   final minutes = seconds ~/ 60;
                   final remainingSeconds = seconds % 60;
-                  return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: AppUi.grey.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: seconds > timeLimit 
-                            ? Colors.red.withOpacity(0.3)
-                            : AppUi.grey.withOpacity(0.2),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.timer_outlined,
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: AppUi.grey.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
                           color: seconds > timeLimit 
-                              ? Colors.red 
-                              : AppUi.offWhite,
-                          size: 20,
+                              ? Colors.red.withOpacity(0.3)
+                              : AppUi.grey.withOpacity(0.2),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.timer_outlined,
                             color: seconds > timeLimit 
                                 ? Colors.red 
                                 : AppUi.offWhite,
+                            size: 20,
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 8),
+                          Text(
+                            '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: seconds > timeLimit 
+                                  ? Colors.red 
+                                  : AppUi.offWhite,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
               ),
             ),
-          ),
           Expanded(
             child: Row(
               children: [

@@ -1,6 +1,7 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/app_ui.dart';
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:fbla_2025/components/terms/termsAddRow.dart';
 import 'package:flutter/material.dart';
 
@@ -62,12 +63,40 @@ class _AddTermsPageState extends State<AddTermsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppUi.backgroundDark,
+        forceMaterialTransparency: true,
         title: Text(
           'Add Terms',
           style: Theme.of(context).textTheme.titleLarge,
         ),
         centerTitle: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Button(
+              onTap: _addNewRow,
+              height: 35,
+              width: 35,
+              child: Center(
+                child: Icon(
+                  Icons.add,
+                  color: AppUi.offWhite,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+          Button(
+            height: 35,
+            width: 70,
+            onTap: _submitTerms,
+            child: Center(
+              child: Text(
+                'Submit',
+                style: Theme.of(context).textTheme.bodyMedium
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -80,39 +109,6 @@ class _AddTermsPageState extends State<AddTermsPage> {
                   child: termRows[index],
                 );
               },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.add_circle,
-                    color: AppUi.primary,
-                    size: 40,
-                  ),
-                  onPressed: _addNewRow,
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppUi.primary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 32,
-                      vertical: 16,
-                    ),
-                  ),
-                  onPressed: _submitTerms,
-                  child: Text(
-                    'Submit',
-                    style: TextStyle(
-                      color: AppUi.backgroundDark,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
         ],

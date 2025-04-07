@@ -100,7 +100,7 @@ class _ClassBoxState extends State<ClassBox> {
       },
       child: Container(
         height: 121,
-        width: 370,
+        width: 371,
         decoration: BoxDecoration(
           color: AppUi.grey.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(20),
@@ -123,7 +123,7 @@ class _ClassBoxState extends State<ClassBox> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 14.0),
+                  padding: const EdgeInsets.only(left: 17.0),
                   child: Container(
                     constraints:
                         const BoxConstraints(maxWidth: 300, maxHeight: 60),
@@ -137,24 +137,18 @@ class _ClassBoxState extends State<ClassBox> {
             ),
             Padding(
               padding: const EdgeInsets.only(right: 12.0, bottom: 65),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) =>
-                              ClassPage(clas: widget.clas)));
-                },
-                child: Icon(
-                  Icons.chevron_right_rounded,
-                  color: AppUi.grey,
-                  size: 30,
-                ),
+              child: Icon(
+                Icons.chevron_right_rounded,
+                color: AppUi.grey,
+                size: 30,
               ),
             ),
           ],
         ),
+      ),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ClassPage(clas: widget.clas)),
       ),
     );
   }

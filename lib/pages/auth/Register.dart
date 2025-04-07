@@ -101,7 +101,8 @@ class Register extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Button(
-                color: AppUi.primary.withValues(alpha: .8),
+              height: 40,
+              width: 360,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -109,7 +110,7 @@ class Register extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .labelLarge
-                            ?.copyWith(color: AppUi.backgroundDark)),
+                    ),
                   ],
                 ),
                 onTap: () async {

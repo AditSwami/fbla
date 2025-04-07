@@ -49,20 +49,6 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
-  void _filterClasses(String query) {
-    setState(() {
-      searchText = query;
-      if (query.isEmpty) {
-        _filteredClasses = _createdClasses;
-      } else {
-        _filteredClasses = _createdClasses
-            .where((clas) => clas.name.toLowerCase()
-                .contains(query.toLowerCase()))
-            .toList();
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,24 +89,22 @@ class _HomepageState extends State<Homepage> {
             ),
             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppUi.grey.withOpacity(0.1),
-                  border: Border.all(
-                    color: AppUi.grey.withOpacity(0.2),
-                    width: 1.0,
-                  ),
-                ),
+              padding: const EdgeInsets.only(left: 15.0),
+              child: SizedBox(
+                width: 365,
                 child: CupertinoSearchTextField(
-                  backgroundColor: Colors.transparent,
+                  decoration: BoxDecoration(
+                  color : AppUi.grey.withValues(alpha: .1),
+                    border: Border.all(
+                      color: AppUi.grey.withOpacity(0.2),
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   style: Theme.of(context).textTheme.bodyMedium,
-                  onChanged: _filterClasses,
-                  controller: _searchController,
-                  placeholder: 'Search classes...',
-                  placeholderStyle: TextStyle(color: AppUi.grey.withOpacity(0.7)),
-                  prefixIcon: Icon(CupertinoIcons.search, color: AppUi.grey.withOpacity(0.7)),
+                  onChanged: (value) => {},
+                  onSubmitted: (value) {},
+                  placeholder: 'Search',
                 ),
               ),
             ),

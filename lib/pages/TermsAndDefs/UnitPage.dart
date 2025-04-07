@@ -114,20 +114,17 @@ class _UnitpageState extends State<Unitpage> {
                 CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
               ),
               child: Icon(Icons.add, color: AppUi.offWhite, size: 28),
-                  ),
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 10.0, left: 4),
+            padding: const EdgeInsets.only(right: 30.0, left: 4),
             child: Button(
               height: 35,
               width: 35,
               color: AppUi.primary,
-              onTap: () => Navigator.push(
-                context,
-                CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
-              ),
+              onTap: _showStudyTips,  // Changed this line
               child: Icon(Icons.question_mark, color: AppUi.offWhite, size: 20),
-                  ),
+            ),
           ),
         ],
       ),
@@ -325,21 +322,16 @@ class _UnitpageState extends State<Unitpage> {
                 ],
               ),
               actions: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    height: 30,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      color: AppUi.primary,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(
-                      child: Text('Got it!', 
-                        style: TextStyle(color: Colors.black)),
+                Button(
+                  height: 40,
+                  width: 70,
+                  child: Center(
+                    child: Text('Got it!', 
+                      style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ),
-                ),
+                  onTap: () => Navigator.pop(context),
+                )
               ],
             ),
           );

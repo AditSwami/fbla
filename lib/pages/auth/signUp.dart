@@ -45,9 +45,13 @@ class Signup extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
                 placeholder: 'Email',
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppUi.grey.withValues(alpha: .2),
-                ),
+                  color : AppUi.grey.withValues(alpha: .1),
+                    border: Border.all(
+                      color: AppUi.grey.withOpacity(0.2),
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 onTapOutside: (event) {
                   FocusScope.of(context).unfocus();
                 },
@@ -70,8 +74,12 @@ class Signup extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
                 placeholder: 'Password',
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppUi.grey.withValues(alpha: .2),
+                 color : AppUi.grey.withValues(alpha: .1),
+                  border: Border.all(
+                     color: AppUi.grey.withOpacity(0.2),
+                     width: 1.0,
+                  ),
+                   borderRadius: BorderRadius.circular(12),
                 ),
                 onTapOutside: (event) {
                   FocusScope.of(context).unfocus();
@@ -82,6 +90,8 @@ class Signup extends StatelessWidget {
               height: 30,
             ),
             Button(
+              height: 40,
+              width: 360,
               color: AppUi.primary.withValues(alpha: .8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -139,20 +149,6 @@ class Signup extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 10.0),
               child: AuthButton(
                 auth: 'google',
-                action: 'sign up',
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 10.0),
-              child: AuthButton(
-                auth: 'apple',
-                action: 'sign up',
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 10.0),
-              child: AuthButton(
-                auth: 'facebook',
                 action: 'sign up',
               ),
             ),

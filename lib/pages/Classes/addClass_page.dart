@@ -33,6 +33,40 @@ class _AddclassPageState extends State<AddclassPage> {
           'Add Class',
           style: Theme.of(context).textTheme.titleLarge,
         ),
+        actions: [
+          Padding(
+          padding: const EdgeInsets.only(right: 18.0),
+          child: Button(
+            height: 35,
+            width: 100,
+            onTap: () async {
+              try {
+                ClassData clas = ClassData();
+                UserData? user = context.read<UserProvider>().currentUser;
+                clas.creator = "${user.firstName} ${user.lastName}";
+                clas.description = _description.text;
+                clas.dateMade = DateTime.now();
+                clas.name = _className.text;
+                clas.id = customId;
+        
+                await Firestore.addClass(clas);
+                context.read<UserProvider>().addClass(clas);
+                Navigator.pop(context, true);
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error adding class: $e')),
+                );
+              }
+            },
+            child: Center(
+              child: Text(
+                'Add Class',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+          ),
+        )
+        ],
       ),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
@@ -73,66 +107,34 @@ class _AddclassPageState extends State<AddclassPage> {
           ),
         ),
         Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-                child: Animatedgradientbox(
-                  height:40,
-                  width: 100,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0, left: 20),
-                    child: Text(
-                      'Generate',
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ),
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            child: Animatedgradientbox(
+              height:40,
+              width: 100,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 20),
+                child: Text(
+                  'Generate',
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
-                onTap: () async {
-                  String className = _className.text;
-                  String? descriptionText = await Gemini.sendMessage(
-                      "Please give me 30 word description of the $className class. Don't mention the name of the class in the beginning in astricks. Don't give me bullet points.  The descirption is for a small box that will be a container in an app that allows students to access units and flashcards.  Your word limit is 15.");
-                  if (descriptionText != null) {
-                    setState(() {
-                      _description.text = descriptionText;
-                    });
-                  }
-                })),
-                const SizedBox(
-                  height: 30,
-                ),
-        // Replace the Add Class button
-        Padding(
-          padding: const EdgeInsets.only(left: 12.0),
-          child: Button(
-            height: 30,
-            width: 150,
-            color: AppUi.offWhite.withValues(alpha: .2),
-            onTap: () async {
-              try {
-                ClassData clas = ClassData();
-                UserData? user = context.read<UserProvider>().currentUser;
-                clas.creator = "${user.firstName} ${user.lastName}";
-                clas.description = _description.text;
-                clas.dateMade = DateTime.now();
-                clas.name = _className.text;
-                clas.id = customId;
-        
-                await Firestore.addClass(clas);
-                context.read<UserProvider>().addClass(clas);
-                Navigator.pop(context, true);
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error adding class: $e')),
-                );
-              }
-            },
-            child: Center(
-              child: Text(
-                'Add Class',
-                style: Theme.of(context).textTheme.labelMedium,
               ),
             ),
-          ),
-        )
+            onTap: () async {
+              String className = _className.text;
+              String? descriptionText = await Gemini.sendMessage(
+                  "Please give me 30 word description of the $className class. Don't mention the name of the class in the beginning in astricks. Don't give me bullet points.  The descirption is for a small box that will be a container in an app that allows students to access units and flashcards.  Your word limit is 15.");
+              if (descriptionText != null) {
+                setState(() {
+                  _description.text = descriptionText;
+                });
+              }
+            }
+          )
+        ),
+        const SizedBox(
+          height: 30,
+        ),
       ]),
     );
   }

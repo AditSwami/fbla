@@ -202,18 +202,20 @@ class _QuizGameState extends State<QuizGame> {
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: Button(
                   color: backgroundColor,
+                  height: null, // Remove fixed height constraint
                   onTap: () => _checkAnswer(option),
-                  child: SizedBox(
-                    height: 60,
-                    child: Center(
-                      child: Text(
-                        option.toString(),
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppUi.offWhite,
-                            ),
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.visible,
-                      ),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                    child: Text(
+                      option.toString(),
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: AppUi.offWhite,
+                            height: 1.3, // Slightly increased line height
+                          ),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      overflow: TextOverflow.visible, // Ensure text doesn't get cut off
                     ),
                   ),
                 ),

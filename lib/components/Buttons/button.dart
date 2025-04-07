@@ -8,7 +8,8 @@ class Button extends StatelessWidget {
     this.width, 
     this.color, 
     this.child, 
-    this.onTap
+    this.onTap,
+    this.constraints
   });
 
   final double? height;
@@ -16,14 +17,16 @@ class Button extends StatelessWidget {
   final Widget? child;
   final Color? color;
   final Function()? onTap;
+  final BoxConstraints? constraints;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height: height ?? 45,
-        width: width ?? 360,
+        height: height,
+        width: width,
+        constraints: constraints,
         decoration: BoxDecoration(
           color: (color ?? AppUi.primary).withOpacity(0.15),
           borderRadius: BorderRadius.circular(12),

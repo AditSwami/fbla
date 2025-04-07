@@ -45,10 +45,14 @@ class Login extends StatelessWidget {
                 controller: _email,
                 placeholder: 'Email',
                 style: Theme.of(context).textTheme.bodyLarge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppUi.grey.withOpacity(.2),
-                ),
+                 decoration: BoxDecoration(
+                  color : AppUi.grey.withValues(alpha: .1),
+                    border: Border.all(
+                      color: AppUi.grey.withOpacity(0.2),
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
               ),
             ),
             const SizedBox(
@@ -67,16 +71,22 @@ class Login extends StatelessWidget {
                 controller: _password,
                 placeholder: 'Password',
                 style: Theme.of(context).textTheme.bodyLarge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppUi.grey.withOpacity(.2),
-                ),
+                 decoration: BoxDecoration(
+                  color : AppUi.grey.withValues(alpha: .1),
+                    border: Border.all(
+                      color: AppUi.grey.withOpacity(0.2),
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
               ),
             ),
             const SizedBox(
               height: 30,
             ),
             Button(
+              height: 40,
+              width: 360,
               color: AppUi.primary.withOpacity(.8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -138,16 +148,7 @@ class Login extends StatelessWidget {
               ),
               child: AuthButton(auth: 'google'),
             ),
-            const Padding(
-              padding: EdgeInsets.only(
-                bottom: 15,
-              ),
-              child: AuthButton(auth: 'apple'),
-            ),
-            const AuthButton(auth: 'facebook'),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30,),
             RichText(
                 text: TextSpan(children: [
               TextSpan(

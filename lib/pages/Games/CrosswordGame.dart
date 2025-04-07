@@ -1,3 +1,4 @@
+import 'package:fbla_2025/components/Buttons/button.dart';
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
 
@@ -350,11 +351,19 @@ class _CrosswordGameState extends State<CrosswordGame> {
               },
             ),
           ),
+        Padding(
+          padding: const EdgeInsets.only(left: 300.0, bottom: 40),
+          child: Button(
+            height: 55,
+            width: 55,
+            onTap: _checkAnswers,
+            child: Icon(
+              Icons.check,
+              color: AppUi.offWhite
+            ),
+                ),
+        ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _checkAnswers,
-        child: const Icon(Icons.check),
       ),
     );
   }

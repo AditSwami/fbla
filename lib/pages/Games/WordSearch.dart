@@ -1,7 +1,6 @@
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/progress_service.dart';
 import 'package:fbla_2025/components/Buttons/button.dart';
-import 'package:fbla_2025/pages/TermsAndDefs/UnitPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fbla_2025/app_ui.dart';
@@ -110,18 +109,6 @@ class _WordSearchState extends State<WordSearch> {
         }
       }
     }
-  }
-
-  // Add this helper method
-  bool _isPartOfWord(int row, int col) {
-    for (var wordPos in wordPositions) {
-      for (var pos in wordPos) {
-        if (pos[0] == row && pos[1] == col) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   bool _canPlaceWord(String word, int row, int col, int dr, int dc) {

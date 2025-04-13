@@ -89,9 +89,9 @@ class _HomepageState extends State<Homepage> {
             ),
             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+              padding: const EdgeInsets.only(left: 11.0),
               child: SizedBox(
-                width: 365,
+                width: 370,
                 child: CupertinoSearchTextField(
                   decoration: BoxDecoration(
                   color : AppUi.grey.withValues(alpha: .1),

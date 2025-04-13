@@ -163,9 +163,7 @@ class _MatchingGameState extends State<MatchingGame> {
             child: Center(
               child: Text(
                 'OK',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: AppUi.backgroundDark
-                ),
+                style: Theme.of(context).textTheme.bodyMedium
               ),
             ),
           ),

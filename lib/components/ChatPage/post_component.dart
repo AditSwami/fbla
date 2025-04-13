@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:fbla_2025/Services/Firebase/firestore/classes.dart';
 import 'package:fbla_2025/Services/Firebase/firestore/db.dart';
 import 'package:fbla_2025/app_ui.dart';
+import 'package:fbla_2025/pages/Chat/Post_Page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fbla_2025/data/Provider.dart';
@@ -79,161 +81,175 @@ class _PostComponentState extends State<PostComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: Colors.transparent,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero,
-        side: BorderSide(
-          color: AppUi.grey.withOpacity(0.1),
-          width: 1,
-          style: BorderStyle.none,
-        ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: AppUi.grey.withOpacity(0.2),
-              width: 1.0,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => PostPage(
+              title: widget.post.title,
+              descirpition: widget.post.description,
+              post: widget.post,
             ),
           ),
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        color: Colors.transparent,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+          side: BorderSide(
+            color: AppUi.grey.withOpacity(0.1),
+            width: 1,
+            style: BorderStyle.none,
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-              child: Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppUi.primary.withOpacity(0.1),
-                          blurRadius: 8,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: CircleAvatar(
-                      radius: 24,
-                      backgroundColor: AppUi.grey.withOpacity(0.2),
-                      child: !isProfilePic 
-                        ? Text(
-                            widget.user.firstName[0].toUpperCase(),
-                            style: TextStyle(
-                              color: AppUi.offWhite,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          )
-                        : ClipOval(
-                            child: Image.memory(
-                              base64Decode(widget.user.pfp),
-                              fit: BoxFit.cover,
-                              width: 48,
-                              height: 48,
-                            ),
-                          ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${widget.post.user.firstName} ${widget.post.user.lastName}",
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          timeago.format(DateTime.fromMillisecondsSinceEpoch(widget.post.date)),
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppUi.grey.withOpacity(0.7),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (widget.post.uid == context.read<UserProvider>().currentUser.id)
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: AppUi.error.withOpacity(0.7),
-                      ),
-                      onPressed: widget.onDelete,
-                    ),
-                ],
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: AppUi.grey.withOpacity(0.2),
+                width: 1.0,
               ),
             ),
-            if (widget.post.title.isNotEmpty)
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-                child: Text(
-                  widget.post.title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            if (widget.post.description.isNotEmpty && widget.post.pics.isEmpty)
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  widget.post.description,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppUi.offWhite.withOpacity(0.9),
-                  ),
-                ),
-              ),
-            if (widget.post.pics.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-                child: _buildImageGallery(),
-              ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: isLiked ? AppUi.error : AppUi.grey.withOpacity(0.7),
-                    ),
-                    onPressed: _handleLike,
-                  ),
-                    Text(
-                      widget.post.likes.length.toString(),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppUi.grey.withOpacity(0.7),
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppUi.primary.withOpacity(0.1),
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: CircleAvatar(
+                        radius: 24,
+                        backgroundColor: AppUi.grey.withOpacity(0.2),
+                        child: !isProfilePic 
+                          ? Text(
+                              widget.user.firstName[0].toUpperCase(),
+                              style: TextStyle(
+                                color: AppUi.offWhite,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )
+                          : ClipOval(
+                              child: Image.memory(
+                                base64Decode(widget.user.pfp),
+                                fit: BoxFit.cover,
+                                width: 48,
+                                height: 48,
+                              ),
+                            ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      icon: Icon(
-                        Icons.chat_bubble_outline,
-                        color: AppUi.grey.withOpacity(0.7),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${widget.post.user.firstName} ${widget.post.user.lastName}",
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Text(
+                            timeago.format(DateTime.fromMillisecondsSinceEpoch(widget.post.date)),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppUi.grey.withOpacity(0.7),
+                            ),
+                          ),
+                        ],
                       ),
-                      onPressed: () {
-                        // Implement comment view
-                      },
                     ),
-                    Text(
-                      widget.post.comments.length.toString(),
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppUi.grey.withOpacity(0.7),
+                    if (widget.post.uid == context.read<UserProvider>().currentUser.id)
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete_outline,
+                          color: AppUi.error.withOpacity(0.7),
+                        ),
+                        onPressed: widget.onDelete,
                       ),
-                    ),
                   ],
                 ),
               ),
-          ],
-        ),
+              if (widget.post.title.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                  child: Text(
+                    widget.post.title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              if (widget.post.description.isNotEmpty && widget.post.pics.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    widget.post.description,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppUi.offWhite.withOpacity(0.9),
+                    ),
+                  ),
+                ),
+              if (widget.post.pics.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                  child: _buildImageGallery(),
+                ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: isLiked ? AppUi.error : AppUi.grey.withOpacity(0.7),
+                      ),
+                      onPressed: _handleLike,
+                    ),
+                      Text(
+                        widget.post.likes.length.toString(),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppUi.grey.withOpacity(0.7),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      IconButton(
+                        icon: Icon(
+                          Icons.chat_bubble_outline,
+                          color: AppUi.grey.withOpacity(0.7),
+                        ),
+                        onPressed: () {
+                          // Implement comment view
+                        },
+                      ),
+                      Text(
+                        widget.post.comments.length.toString(),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppUi.grey.withOpacity(0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        )
       )
     );
   }

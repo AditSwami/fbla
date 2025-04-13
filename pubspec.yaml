@@ -30,10 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  social_sharing_plus: ^1.2.3
   shared_preferences: ^2.2.2  # Add this line
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   image: ^4.1.3
   firebase_core: ^3.6.0
@@ -49,7 +47,17 @@ dependencies:
   timeago: ^3.7.0
   image_picker: ^1.1.2
   flutter_image_compress: ^2.4.0
-
+  social_share_plugin: ^0.4.2+2
+  flutter_launcher_icons: ^0.14.3
+  
+# Move flutter_icons configuration here, at the root level
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/Logo.png"  # Make sure this path is correct
+  adaptive_icon_background: "#FFFFFF"  # Optional: background color for adaptive icons
+  adaptive_icon_foreground: "assets/Logo.png"  # Optional: foreground image for adaptive icons
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -78,31 +86,5 @@ flutter:
      - assets/apple_logo_black.png
      - assets/apple_logo_white.png
      - assets/Facebook Logo.png
-     - assets/classes_screen.png
-     - assets/unit_screen.png
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+  # Remove the flutter_icons section from here

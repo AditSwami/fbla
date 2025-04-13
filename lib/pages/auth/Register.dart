@@ -99,7 +99,7 @@ class Register extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.only(top: 35.0),
             child: Button(
               height: 40,
               width: 360,

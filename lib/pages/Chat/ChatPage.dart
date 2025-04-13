@@ -46,7 +46,7 @@ class _ChatpageState extends State<Chatpage> {
                 pinned: false,
                 automaticallyImplyLeading: false,
                 backgroundColor: AppUi.backgroundDark,
-                expandedHeight: 120,
+                expandedHeight: 121,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,9 +92,9 @@ class _ChatpageState extends State<Chatpage> {
                       ),
                       const SizedBox(height: 20),
                       Padding(
-                        padding: const EdgeInsets.only(left: 15.0),
+                        padding: const EdgeInsets.only(left: 20.0),
                         child: SizedBox(
-                          width: 365,
+                          width: 370,
                           child: CupertinoSearchTextField(
                             decoration: BoxDecoration(
                               color: AppUi.grey.withValues(alpha: .1),

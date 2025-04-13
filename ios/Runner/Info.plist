@@ -57,5 +57,12 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- Add this inside the <dict> tag -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	    <string>instagram-stories</string>
+	    <string>instagram</string>
+	    <!-- Other schemes you might need -->
+	</array>
 </dict>
 </plist>

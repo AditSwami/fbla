@@ -2,7 +2,7 @@
     <application
         android:label="Journey"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -41,5 +41,16 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+    </queries>
+    <!-- Add this inside the <application> tag -->
+    <provider
+        android:name="com.facebook.FacebookContentProvider"
+        android:authorities="com.facebook.app.FacebookContentProvider[YOUR_FACEBOOK_APP_ID]"
+        android:exported="true" />
+    
+    <!-- Add this before the <application> tag -->
+    <queries>
+        <package android:name="com.instagram.android" />
+        <!-- Other packages you might need -->
     </queries>
 </manifest>

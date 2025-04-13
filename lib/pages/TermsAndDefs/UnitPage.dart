@@ -103,16 +103,30 @@ class _UnitpageState extends State<Unitpage> {
         centerTitle: false,
         // Add to AppBar actions
         actions: [
+          // Update the Button onTap in the AppBar actions
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child: Button(
               height: 35,
               width: 35,
               color: AppUi.primary,
-              onTap: () => Navigator.push(
-                context,
-                CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas,)),
-              ),
+              onTap: () async {
+                final result = await Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) => AddTermsPage(unit: widget.unit, clas: widget.clas)),
+                );
+                
+                if (result == true) {
+                  // Terms were added successfully, refresh the page
+                  setState(() {
+                    termsAndDefs = Map<String, dynamic>.from(widget.unit.terms);
+                    // Reset current index if needed
+                    if (currentIndex >= termsAndDefs.entries.length) {
+                      currentIndex = termsAndDefs.entries.isEmpty ? 0 : termsAndDefs.entries.length - 1;
+                    }
+                  });
+                }
+              },
               child: Icon(Icons.add, color: AppUi.offWhite, size: 28),
             ),
           ),

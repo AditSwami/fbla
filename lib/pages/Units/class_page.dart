@@ -131,7 +131,7 @@ class _ClassPageState extends State<ClassPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         forceMaterialTransparency: true,
-        toolbarHeight: 120,
+        toolbarHeight: 121,
         backgroundColor: AppUi.backgroundDark,
         flexibleSpace: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,9 +165,9 @@ class _ClassPageState extends State<ClassPage> {
             ),
             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+              padding: const EdgeInsets.only(left: 11),
               child: SizedBox(
-                width: 365,
+                width: 370,
                 child: CupertinoSearchTextField(
                   decoration: BoxDecoration(
                     color: AppUi.grey.withAlpha(26),
@@ -188,7 +188,7 @@ class _ClassPageState extends State<ClassPage> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 55.0, right: 10.0),
+            padding: const EdgeInsets.only(bottom: 55.0, right: 20.0),
             child: _buildJoinButton(),
           ),
 

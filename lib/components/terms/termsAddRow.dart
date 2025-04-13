@@ -3,13 +3,24 @@ import 'package:fbla_2025/app_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TermsAddRow extends StatefulWidget {  // Change to StatefulWidget
-  TermsAddRow({super.key, required this.unit});
+class TermsAddRow extends StatefulWidget {
+  TermsAddRow({
+    super.key, 
+    required this.unit, 
+    required this.index
+  }) {
+    // Initialize controllers in the constructor
+    termController = TextEditingController();
+    definitionController = TextEditingController();
+  }
 
   final UnitData unit;
-  final TextEditingController term = TextEditingController();
-  final TextEditingController definition = TextEditingController();
-
+  final int index;
+  
+  // Expose controllers as public fields
+  late final TextEditingController termController;
+  late final TextEditingController definitionController;
+  
   @override
   State<TermsAddRow> createState() => _TermsAddRowState();
 }
@@ -40,7 +51,7 @@ class _TermsAddRowState extends State<TermsAddRow> {
     if (value.length < 2) {
       return 'Too short';
     }
-    if (widget.unit.terms.containsKey(widget.term.text)) {
+    if (widget.unit.terms.containsKey(widget.termController.text)) {
       return 'Term already exists';
     }
     // Check if definition is educational
@@ -53,7 +64,7 @@ class _TermsAddRowState extends State<TermsAddRow> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppUi.grey.withValues(alpha: .1),
@@ -63,19 +74,39 @@ class _TermsAddRowState extends State<TermsAddRow> {
           width: 1,
         ),
       ),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Term number header
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Text(
+              'Term ${widget.index + 1}',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: AppUi.primary,
+              ),
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
+                flex: 10,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Term',
-                      style: Theme.of(context).textTheme.bodyMedium
+                    // Term label above the text field
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4, left: 4),
+                      child: Text(
+                        'Term',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppUi.grey,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    // Term field
                     Container(
                       decoration: BoxDecoration(
                         color: AppUi.grey.withValues(alpha: .1),
@@ -87,10 +118,10 @@ class _TermsAddRowState extends State<TermsAddRow> {
                           maxHeight: 200,
                         ),
                         child: CupertinoTextField(
-                          controller: widget.term,
-                          placeholder: 'Term',
+                          controller: widget.termController,
+                          placeholder: 'Enter term',
                           style: Theme.of(context).textTheme.bodyLarge,
-                          maxLines: null, // Allows infinite lines
+                          maxLines: null,
                           keyboardType: TextInputType.multiline,
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
@@ -108,9 +139,10 @@ class _TermsAddRowState extends State<TermsAddRow> {
                         ),
                       ),
                     ),
+                    // Error message below the text field
                     if (termError != null)
                       Padding(
-                        padding: const EdgeInsets.only(top: 4),
+                        padding: const EdgeInsets.only(top: 4, left: 4),
                         child: Text(
                           termError!,
                           style: const TextStyle(color: Colors.red, fontSize: 12),
@@ -121,14 +153,21 @@ class _TermsAddRowState extends State<TermsAddRow> {
               ),
               const SizedBox(width: 16),
               Expanded(
+                flex: 12,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Definition',
-                      style: Theme.of(context).textTheme.bodyMedium
+                    // Definition label above the text field
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4, left: 4),
+                      child: Text(
+                        'Definition',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppUi.grey,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 8),
+                    // Definition field
                     Container(
                       decoration: BoxDecoration(
                         color: AppUi.grey.withValues(alpha: .1),
@@ -140,10 +179,10 @@ class _TermsAddRowState extends State<TermsAddRow> {
                           maxHeight: 200,
                         ),
                         child: CupertinoTextField(
-                          controller: widget.definition,
-                          placeholder: 'Definition',
+                          controller: widget.definitionController,
+                          placeholder: 'Enter definition',
                           style: Theme.of(context).textTheme.bodyLarge,
-                          maxLines: null, // Allows infinite lines
+                          maxLines: null,
                           keyboardType: TextInputType.multiline,
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
@@ -161,9 +200,10 @@ class _TermsAddRowState extends State<TermsAddRow> {
                         ),
                       ),
                     ),
+                    // Error message below the text field
                     if (definitionError != null)
                       Padding(
-                        padding: const EdgeInsets.only(top: 4),
+                        padding: const EdgeInsets.only(top: 4, left: 4),
                         child: Text(
                           definitionError!,
                           style: const TextStyle(color: Colors.red, fontSize: 12),
@@ -173,8 +213,8 @@ class _TermsAddRowState extends State<TermsAddRow> {
                 ),
               ),
             ],
-          );
-        }
+          ),
+        ],
       ),
     );
   }

@@ -33,7 +33,7 @@ class _AllClassesState extends State<AllClasses> {
       appBar: AppBar(
         forceMaterialTransparency: true,
         automaticallyImplyLeading: false,
-        toolbarHeight: 120,
+        toolbarHeight: 121,
         backgroundColor: AppUi.backgroundDark,
         flexibleSpace: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,9 +52,9 @@ class _AllClassesState extends State<AllClasses> {
               height: 20,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+              padding: const EdgeInsets.only(left: 11.0),
               child: SizedBox(
-                width: 365,
+                width: 370,
                 child: CupertinoSearchTextField(
                   decoration: BoxDecoration(
                   color : AppUi.grey.withValues(alpha: .1),

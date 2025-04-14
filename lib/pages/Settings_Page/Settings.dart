@@ -1,5 +1,7 @@
 import 'package:fbla_2025/Services/Firebase/firestore/Auth/Auth.dart';
-import 'package:fbla_2025/pages/Settings_Page/Account_Settings.dart';
+import 'package:fbla_2025/pages/Settings_Page/help_center.dart'; // Add this import
+import 'package:fbla_2025/pages/Settings_Page/privacy_policy.dart';
+import 'package:fbla_2025/pages/Settings_Page/terms_and_conditions.dart';
 import 'package:fbla_2025/pages/auth/signUp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,22 +39,6 @@ class SettingsActual extends StatelessWidget {
                     ),
                   ),
                 ),
-                Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 28.0, top: 30),
-                    child: Text(
-                      'Units Created:',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50.0, right: 5),
-                    child: Text(
-                      'Followers:',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                ])
               ],
             ),
             Padding(
@@ -66,67 +52,14 @@ class SettingsActual extends StatelessWidget {
                           bottom: BorderSide(
                               color: AppUi.grey.withValues(alpha: .5)))),
                   child: Text(
-                    'Account',
+                    'Privacy Policy',
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => AccountSettings()));
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 20),
-              child: GestureDetector(
-                child: Container(
-                  height: 40,
-                  width: 350,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: AppUi.grey.withValues(alpha: .5)))),
-                  child: Text(
-                    'Appearance',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 20),
-              child: GestureDetector(
-                child: Container(
-                  height: 40,
-                  width: 350,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: AppUi.grey.withValues(alpha: .5)))),
-                  child: Text(
-                    'Journey Rules',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 20),
-              child: GestureDetector(
-                child: Container(
-                  height: 40,
-                  width: 350,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: AppUi.grey.withValues(alpha: .5)))),
-                  child: Text(
-                    'Privacy',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                ),
+                onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => PrivacyPolicyPage())),
               ),
             ),
             Padding(
@@ -144,6 +77,10 @@ class SettingsActual extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
+                onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => TermsAndConditionsPage())),
               ),
             ),
             Padding(
@@ -161,23 +98,10 @@ class SettingsActual extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0, top: 20),
-              child: GestureDetector(
-                child: Container(
-                  height: 40,
-                  width: 350,
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: AppUi.grey.withValues(alpha: .5)))),
-                  child: Text(
-                    'Report a bug',
-                    style: Theme.of(context).textTheme.labelLarge,
-                  ),
-                ),
+                onTap: () => Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => HelpCenterPage())),
               ),
             ),
             Padding(

@@ -49,6 +49,27 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
+  // Add a method to refresh classes from the database
+  Future<void> _refreshClasses() async {
+    try {
+      if(mounted) {
+      Firestore.getUserCreatedClasses(context).then((clas) {
+        setState(() {
+          _createdClasses = clas ?? [];
+          _filteredClasses = _createdClasses; // Move this inside setState
+        });
+      });
+      Firestore.getUserClasses(context).then((clas) {
+        setState(() {
+          _joinedClasses = clas ?? [];
+        });
+      });
+    }
+    } catch (e) {
+      print("Error refreshing classes: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +110,7 @@ class _HomepageState extends State<Homepage> {
             ),
             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.only(left: 11.0),
+              padding: const EdgeInsets.only(left: 17.0),
               child: SizedBox(
                 width: 370,
                 child: CupertinoSearchTextField(
@@ -111,11 +132,12 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
+      // Wrap the body with CupertinoRefresh
       body: CupertinoRefresh(
-        physics: const BouncingScrollPhysics(),
-        delayDuration: const Duration(milliseconds: 800),
+        physics: const AlwaysScrollableScrollPhysics(),
+        delayDuration: const Duration(seconds: 1),
+        onRefresh: _refreshClasses,
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -187,21 +209,6 @@ class _HomepageState extends State<Homepage> {
             ],
           ),
         ),
-        onRefresh: () async {
-          await Future.wait([
-            Firestore.getUserCreatedClasses(context).then((clas) {
-              setState(() {
-                _createdClasses = clas ?? [];
-                _filteredClasses = _createdClasses;
-              });
-            }),
-            Firestore.getUserClasses(context).then((clas) {
-              setState(() {
-                _joinedClasses = clas ?? [];
-              });
-            }),
-          ]);
-        },
       ),
     );
   }

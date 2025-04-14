@@ -188,7 +188,7 @@ class _ClassPageState extends State<ClassPage> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 55.0, right: 20.0),
+            padding: const EdgeInsets.only(bottom: 55.0, right: 10.0),
             child: _buildJoinButton(),
           ),
 

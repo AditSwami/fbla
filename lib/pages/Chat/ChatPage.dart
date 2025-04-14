@@ -92,7 +92,7 @@ class _ChatpageState extends State<Chatpage> {
                       ),
                       const SizedBox(height: 20),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
+                        padding: const EdgeInsets.only(left: 26.0),
                         child: SizedBox(
                           width: 370,
                           child: CupertinoSearchTextField(

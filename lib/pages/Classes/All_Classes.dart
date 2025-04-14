@@ -52,7 +52,7 @@ class _AllClassesState extends State<AllClasses> {
               height: 20,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 11.0),
+              padding: const EdgeInsets.only(left: 17.0),
               child: SizedBox(
                 width: 370,
                 child: CupertinoSearchTextField(
